@@ -1,0 +1,2092 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════════════════╗
+  ║                   PRAEVIX™ PE INTELLIGENCE PLATFORM                      ║
+  ║                                                                          ║
+  ║  Copyright © 2025–2026 Nishant Prabhakar. All rights reserved.          ║
+  ║                                                                          ║
+  ║  This software, its source code, design, structure, logic, visual        ║
+  ║  elements, and all associated intellectual property are the exclusive    ║
+  ║  property of Nishant Prabhakar ("Author") and are protected under        ║
+  ║  applicable copyright, trade secret, and intellectual property laws,     ║
+  ║  including but not limited to the Indian Copyright Act, 1957, and the    ║
+  ║  Berne Convention for the Protection of Literary and Artistic Works.     ║
+  ║                                                                          ║
+  ║  NOTICE: Unauthorised access, copying, reproduction, modification,       ║
+  ║  distribution, redistribution, sublicensing, resale, reverse-           ║
+  ║  engineering, decompilation, or creation of derivative works based on    ║
+  ║  this software, in whole or in part, is strictly prohibited without      ║
+  ║  the prior explicit written consent of the Author.                       ║
+  ║                                                                          ║
+  ║  Licensed users are granted a limited, non-exclusive, non-transferable,  ║
+  ║  non-sublicensable licence to use this software solely for their own     ║
+  ║  internal business purposes. This licence does not convey any            ║
+  ║  ownership rights in the software or its source code.                   ║
+  ║                                                                          ║
+  ║  "Praevix" is a proprietary trademark of Nishant Prabhakar.             ║
+  ║                                                                          ║
+  ║  Contact: nishant.prabhakar@skegen.com                                   ║
+  ╚══════════════════════════════════════════════════════════════════════════╝
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="copyright" content="Copyright © 2025–2026 Nishant Prabhakar. All rights reserved."/>
+<meta name="author" content="Nishant Prabhakar"/>
+<meta name="robots" content="noindex, nofollow"/>
+<title>Praevix — PE Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#09090e;--s1:#101018;--s2:#14141e;--s3:#1a1a27;--s4:#20202f;
+  --b0:rgba(255,255,255,0.05);--b1:rgba(255,255,255,0.09);--b2:rgba(255,255,255,0.15);
+  --t0:#f2f2f8;--t1:#9090a8;--t2:#55556a;--t3:#303045;
+  --p:#7c6ef7;--p2:#5b50c8;--p3:#a89af9;--pg:rgba(124,110,247,0.12);--pg2:rgba(124,110,247,0.06);
+  --gr:#3dd68c;--grb:rgba(61,214,140,0.1);--grbd:rgba(61,214,140,0.22);
+  --am:#f0a445;--amb:rgba(240,164,69,0.1);--ambd:rgba(240,164,69,0.22);
+  --rd:#ef5f5f;--rdb:rgba(239,95,95,0.1);--rdbd:rgba(239,95,95,0.22);
+  --bl:#5b9cf6;--blb:rgba(91,156,246,0.1);--blbd:rgba(91,156,246,0.22);
+  --te:#2fd4c8;--teb:rgba(47,212,200,0.1);
+  --f:'Inter',system-ui,sans-serif;--fm:'IBM Plex Mono',monospace;
+  --r:10px;--rl:15px;--rxl:20px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--f);background:var(--bg);color:var(--t0);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--b1);border-radius:3px}
+
+/* ── MODALS / OVERLAYS ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);z-index:900;display:none;align-items:center;justify-content:center;padding:20px}
+.overlay.show{display:flex}
+.modal{background:var(--s2);border:1px solid var(--b1);border-radius:var(--rxl);padding:32px;width:100%;max-width:500px;position:relative}
+.modal-x{position:absolute;top:14px;right:14px;background:transparent;border:none;color:var(--t2);cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:18px;transition:all .15s}
+.modal-x:hover{background:var(--s3);color:var(--t0)}
+.modal h2{font-size:18px;font-weight:500;margin-bottom:5px;letter-spacing:-0.02em}
+.modal .sub{font-size:13px;color:var(--t1);margin-bottom:24px;line-height:1.6}
+.field{margin-bottom:18px}
+.field label{display:block;font-size:11px;color:var(--t2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px;font-weight:500}
+.field input,.field select{width:100%;background:var(--s3);border:1px solid var(--b1);border-radius:var(--r);padding:11px 14px;font-family:var(--f);font-size:14px;color:var(--t0);outline:none;transition:border-color .15s}
+.field input:focus,.field select:focus{border-color:rgba(124,110,247,.5);box-shadow:0 0 0 3px var(--pg)}
+.field select option{background:var(--s3)}
+.field .hint{font-size:12px;color:var(--t2);margin-top:6px;line-height:1.5}
+.field .hint a{color:var(--p3);text-decoration:none}
+.field .hint a:hover{text-decoration:underline}
+.modal-foot{display:flex;gap:10px;justify-content:flex-end;margin-top:6px}
+.btn-ghost{background:transparent;border:1px solid var(--b1);color:var(--t1);padding:9px 18px;border-radius:var(--r);font-family:var(--f);font-size:13px;cursor:pointer;transition:all .15s}
+.btn-ghost:hover{border-color:var(--b2);color:var(--t0)}
+.btn-prim{background:var(--p);color:#fff;border:none;padding:9px 22px;border-radius:var(--r);font-family:var(--f);font-size:13px;font-weight:500;cursor:pointer;transition:background .15s}
+.btn-prim:hover{background:#8f82f9}
+.provider-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}
+.prov{background:var(--s3);border:1.5px solid var(--b0);border-radius:var(--r);padding:12px 14px;cursor:pointer;transition:all .15s}
+.prov:hover{border-color:var(--b1)}
+.prov.active{border-color:var(--p);background:var(--pg2)}
+.prov-name{font-size:13px;font-weight:500;margin-bottom:2px}
+.prov-tag{font-size:11px;color:var(--gr)}
+.prov-tag.paid{color:var(--am)}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:200;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;background:rgba(9,9,14,.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--b0)}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;cursor:pointer}
+.brand-mark{width:32px;height:32px;flex-shrink:0}
+.brand-name{font-size:16px;font-weight:600;color:var(--t0);letter-spacing:-0.03em}
+.brand-name em{font-style:normal;color:var(--p3)}
+.nav-r{display:flex;align-items:center;gap:10px}
+.nav-badge{font-size:11px;padding:4px 12px;border-radius:20px;background:var(--pg2);border:1px solid rgba(124,110,247,.2);color:var(--p3);letter-spacing:.04em}
+.nav-live{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--t2)}
+.nav-live span{width:6px;height:6px;border-radius:50%;background:var(--gr);box-shadow:0 0 6px var(--gr)}
+.nav-btn{background:transparent;border:1px solid var(--b1);color:var(--t1);width:32px;height:32px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-size:15px}
+.nav-btn:hover{border-color:var(--b2);color:var(--t0)}
+
+/* ── HOME ── */
+#home{position:relative;z-index:1}
+.hero{max-width:680px;margin:0 auto;padding:80px 28px 56px;text-align:center}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;padding:5px 16px;border-radius:20px;background:var(--pg2);border:1px solid rgba(124,110,247,.2);font-size:12px;color:var(--p3);letter-spacing:.06em;margin-bottom:28px}
+h1{font-size:clamp(34px,5.2vw,54px);font-weight:600;letter-spacing:-0.045em;line-height:1.08;margin-bottom:20px}
+h1 .g{background:linear-gradient(130deg,var(--p) 0%,var(--p3) 50%,var(--te) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-p{font-size:16px;color:var(--t1);max-width:480px;margin:0 auto 48px;line-height:1.75;font-weight:300}
+
+/* Search */
+.search-box{background:var(--s2);border:1px solid var(--b1);border-radius:var(--rl);padding:7px;max-width:600px;margin:0 auto 16px;display:flex;gap:7px;transition:all .2s}
+.search-box:focus-within{border-color:rgba(124,110,247,.45);box-shadow:0 0 0 4px var(--pg)}
+.search-ico{display:flex;align-items:center;padding:0 12px;color:var(--t2);font-size:17px;flex-shrink:0}
+.search-box input{flex:1;background:transparent;border:none;outline:none;font-family:var(--f);font-size:15px;color:var(--t0);padding:9px 0}
+.search-box input::placeholder{color:var(--t2)}
+.search-go{background:var(--p);color:#fff;border:none;border-radius:9px;padding:0 22px;height:40px;font-family:var(--f);font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:7px;white-space:nowrap;transition:all .15s;letter-spacing:-.01em}
+.search-go:hover{background:#8f82f9}
+.search-go:active{transform:scale(.98)}
+.nokey{background:var(--amb);border:1px solid var(--ambd);border-radius:var(--r);padding:10px 16px;font-size:13px;color:var(--am);text-align:center;max-width:600px;margin:0 auto 12px;cursor:pointer;display:none}
+.nokey:hover{background:rgba(240,164,69,.15)}
+
+/* Chips */
+.chips-label{font-size:11px;color:var(--t2);margin-bottom:10px;text-align:center;letter-spacing:.04em}
+.chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:64px}
+.chip{background:var(--s2);border:1px solid var(--b0);border-radius:20px;padding:5px 15px;font-size:13px;color:var(--t1);cursor:pointer;transition:all .15s}
+.chip:hover{border-color:var(--p);color:var(--p3);background:var(--pg2)}
+
+/* Feature grid */
+.feat-grid{max-width:780px;margin:0 auto 72px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--b0);border:1px solid var(--b0);border-radius:var(--rl);overflow:hidden}
+.feat{background:var(--s1);padding:20px 16px}
+.feat-i{font-size:20px;color:var(--p3);margin-bottom:8px}
+.feat-t{font-size:13px;font-weight:500;color:var(--t0);margin-bottom:3px}
+.feat-s{font-size:12px;color:var(--t2);line-height:1.45}
+
+/* ── LOADING ── */
+#loading{display:none;max-width:560px;margin:48px auto;padding:0 28px}
+.load-card{background:var(--s2);border:1px solid var(--b1);border-radius:var(--rl);padding:28px}
+.load-top{display:flex;align-items:center;gap:14px;margin-bottom:24px}
+.spin{width:20px;height:20px;border:2px solid var(--b1);border-top-color:var(--p);border-radius:50%;animation:spin .75s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.load-name{font-size:15px;font-weight:500}
+.load-sub{font-size:12px;color:var(--t2);margin-top:3px}
+.steps{display:flex;flex-direction:column}
+.stp{display:flex;align-items:center;gap:11px;padding:10px 0;border-bottom:1px solid var(--b0);font-size:13px;color:var(--t2);transition:color .3s}
+.stp:last-child{border-bottom:none}
+.stp-dot{width:8px;height:8px;border-radius:50%;background:var(--s4);flex-shrink:0;transition:all .3s}
+.stp.on{color:var(--t0)}.stp.on .stp-dot{background:var(--p);box-shadow:0 0 8px rgba(124,110,247,.6);animation:pd 1s ease-in-out infinite}
+.stp.done{color:var(--t1)}.stp.done .stp-dot{background:var(--gr);box-shadow:0 0 5px rgba(61,214,140,.4)}
+@keyframes pd{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ── REPORT ── */
+#report{display:none;max-width:900px;margin:0 auto;padding:0 28px 90px;z-index:1;position:relative}
+
+.rpt-top{background:var(--s2);border:1px solid var(--b1);border-radius:var(--rl);padding:26px;margin-bottom:16px;position:relative;overflow:hidden}
+.rpt-top::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--p),var(--p3),var(--te))}
+.rh{display:flex;align-items:flex-start;gap:16px;margin-bottom:22px}
+.co-av{width:60px;height:60px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;color:#fff;flex-shrink:0;background:linear-gradient(135deg,var(--p),var(--p2))}
+.co-inf{flex:1;min-width:0}
+.co-nm{font-size:26px;font-weight:600;letter-spacing:-0.035em;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:11.5px;padding:3px 10px;border-radius:6px;font-weight:500}
+.t-bl{background:var(--blb);color:var(--bl);border:1px solid var(--blbd)}
+.t-gr{background:var(--grb);color:var(--gr);border:1px solid var(--grbd)}
+.t-gy{background:var(--s3);color:var(--t1);border:1px solid var(--b1)}
+.t-am{background:var(--amb);color:var(--am);border:1px solid var(--ambd)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:9px}
+.kpi{background:var(--s3);border:1px solid var(--b0);border-radius:var(--r);padding:12px 14px}
+.kpi-l{font-size:10px;color:var(--t2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-weight:500}
+.kpi-v{font-size:20px;font-weight:600;font-family:var(--fm);letter-spacing:-.02em}
+.kv-g{color:var(--gr)}.kv-p{color:var(--p3)}.kv-b{color:var(--bl)}.kv-a{color:var(--am)}
+
+/* Actions */
+.rpt-acts{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.act{display:flex;align-items:center;gap:6px;background:transparent;border:1px solid var(--b1);color:var(--t1);padding:7px 15px;border-radius:var(--r);font-family:var(--f);font-size:13px;cursor:pointer;transition:all .15s}
+.act:hover{border-color:var(--b2);color:var(--t0)}
+.act-p{background:var(--pg2);border-color:rgba(124,110,247,.3);color:var(--p3)}
+.act-p:hover{background:var(--pg);border-color:rgba(124,110,247,.5);color:var(--p3)}
+
+/* Section accordion */
+.sec{background:var(--s2);border:1px solid var(--b0);border-radius:var(--rl);margin-bottom:10px;overflow:hidden}
+.sec-h{display:flex;align-items:center;gap:10px;padding:14px 18px;cursor:pointer;user-select:none;transition:background .15s}
+.sec-h:hover{background:rgba(255,255,255,.015)}
+.sec-ic{width:28px;height:28px;border-radius:7px;background:var(--pg2);border:1px solid rgba(124,110,247,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;color:var(--p3)}
+.sec-tt{font-size:14px;font-weight:500;flex:1}
+.sec-ct{font-size:11px;color:var(--t2);background:var(--s3);padding:2px 8px;border-radius:5px}
+.sec-arr{font-size:12px;color:var(--t2);transition:transform .2s}
+.sec.open .sec-arr{transform:rotate(180deg)}
+.sec-b{display:none;padding:16px 18px;border-top:1px solid var(--b0)}
+.sec.open .sec-b{display:block}
+
+/* Content */
+.prose{font-size:14px;color:var(--t1);line-height:1.82}
+.prose p{margin-bottom:12px}
+.prose p:last-child{margin-bottom:0}
+.prose strong{color:var(--t0);font-weight:500}
+.hl{background:var(--pg2);border:1px solid rgba(124,110,247,.18);border-radius:var(--r);padding:13px 15px;margin-bottom:14px;font-size:13px;color:var(--t1);line-height:1.65}
+.hl strong{color:var(--p3)}
+
+/* Tables */
+table.dt{width:100%;border-collapse:collapse;font-size:13px}
+table.dt th{text-align:left;padding:8px 10px;color:var(--t2);font-size:11px;text-transform:uppercase;letter-spacing:.07em;border-bottom:1px solid var(--b1);font-weight:500}
+table.dt td{padding:10px 10px;border-bottom:1px solid var(--b0);color:var(--t1);vertical-align:middle}
+table.dt tr:last-child td{border-bottom:none}
+table.dt tr:hover td{background:rgba(255,255,255,.01)}
+.td-p{color:var(--t0)!important;font-weight:500}
+.mn{font-family:var(--fm)!important}
+
+/* Round badges */
+.rb{display:inline-block;font-size:11px;padding:2px 9px;border-radius:5px;font-weight:500;font-family:var(--fm)}
+.rb-seed{background:var(--grb);color:var(--gr);border:1px solid var(--grbd)}
+.rb-a{background:var(--blb);color:var(--bl);border:1px solid var(--blbd)}
+.rb-b{background:var(--pg2);color:var(--p3);border:1px solid rgba(124,110,247,.2)}
+.rb-c{background:var(--amb);color:var(--am);border:1px solid var(--ambd)}
+.rb-late{background:var(--rdb);color:var(--rd);border:1px solid var(--rdbd)}
+.rb-ipo{background:var(--teb);color:var(--te);border:1px solid rgba(47,212,200,.2)}
+.rb-o{background:var(--s3);color:var(--t1);border:1px solid var(--b1)}
+
+/* Investors grid */
+.inv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:9px}
+.inv{background:var(--s3);border:1px solid var(--b0);border-radius:var(--r);padding:12px 13px}
+.inv-n{font-size:13px;font-weight:500;margin-bottom:3px}
+.inv-m{font-size:12px;color:var(--t2)}
+.inv-l{display:inline-block;font-size:10px;color:var(--am);background:var(--amb);border:1px solid var(--ambd);padding:2px 7px;border-radius:4px;margin-top:5px;font-weight:500}
+.inv-f{display:inline-block;font-size:10px;color:var(--te);background:var(--teb);padding:2px 7px;border-radius:4px;margin-top:5px;margin-left:4px}
+
+/* Risks */
+.risk{display:flex;gap:13px;padding:15px 0;border-bottom:1px solid var(--b0)}
+.risk:first-child{padding-top:4px}
+.risk:last-child{border-bottom:none;padding-bottom:4px}
+.risk-ico{width:28px;height:28px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px}
+.rh-ico{background:var(--rdb)}.rm-ico{background:var(--amb)}.rl-ico{background:var(--grb)}
+.risk-t{font-size:13px;font-weight:500;margin-bottom:4px}
+.risk-d{font-size:13px;color:var(--t1);line-height:1.65}
+.risk-b{display:inline-block;font-size:10.5px;padding:2px 7px;border-radius:4px;margin-top:6px;font-weight:500}
+.rb-h{background:var(--rdb);color:var(--rd)}.rb-m{background:var(--amb);color:var(--am)}.rb-l{background:var(--grb);color:var(--gr)}
+
+/* Competitors */
+.comp-list{display:flex;flex-direction:column;gap:8px}
+.comp{background:var(--s3);border:1px solid var(--b0);border-radius:var(--r);padding:12px 14px;display:flex;align-items:center;gap:12px}
+.comp-av{width:32px;height:32px;border-radius:8px;background:var(--s2);border:1px solid var(--b1);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--t1);flex-shrink:0}
+.comp-n{font-size:13px;font-weight:500}
+.comp-d{font-size:12px;color:var(--t2);margin-top:2px}
+.comp-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
+.comp-tag{font-size:11px;color:var(--t2);background:var(--s2);border:1px solid var(--b0);padding:2px 7px;border-radius:4px}
+.comp-diff{font-size:11px;color:var(--p3);background:var(--pg2);border:1px solid rgba(124,110,247,.15);padding:2px 7px;border-radius:4px}
+
+/* Grid helpers */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:580px){.two{grid-template-columns:1fr}}
+.dl{display:flex;flex-direction:column}
+.dlr{display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--b0);font-size:13px;gap:12px}
+.dlr:last-child{border-bottom:none}
+.dlk{color:var(--t2);flex-shrink:0}
+.dlv{color:var(--t0);font-weight:500;text-align:right;max-width:60%}
+.ch-wrap{position:relative;width:100%}
+.ch-lbl{font-size:11px;color:var(--t2);text-align:center;margin-top:7px;text-transform:uppercase;letter-spacing:.05em}
+
+/* AI summary */
+.ai-sum{background:linear-gradient(135deg,var(--s2),var(--s3));border:1px solid rgba(124,110,247,.2);border-radius:var(--rl);padding:20px;margin-bottom:16px;position:relative;overflow:hidden}
+.ai-sum::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(180deg,var(--p),var(--te))}
+.ai-sum-label{font-size:10.5px;color:var(--p3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;font-weight:500;padding-left:12px}
+.ai-sum p{font-size:14px;color:var(--t1);line-height:1.75;padding-left:12px}
+
+/* Footer */
+footer{border-top:1px solid var(--b0);padding:20px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--t2);position:relative;z-index:1}
+.ft-brand{display:flex;align-items:center;gap:8px}
+.ft-brand svg{width:20px;height:20px}
+.ft-disc{max-width:480px;line-height:1.5;text-align:right}
+@media(max-width:580px){.ft-disc{text-align:left}}
+
+/* ── LOGIN SCREEN ── */
+#login-screen{position:fixed;inset:0;z-index:200000;background:#09090e;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-wrap{width:100%;max-width:420px}
+.login-logo{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:32px}
+.login-logo-name{font-size:20px;font-weight:600;letter-spacing:-0.03em;color:var(--t0)}
+.login-logo-name em{font-style:normal;color:var(--p3)}
+.login-card{background:var(--s2);border:1px solid var(--b1);border-radius:var(--rxl);padding:32px;position:relative;overflow:hidden}
+.login-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--p),var(--p3),var(--te))}
+.login-title{font-size:22px;font-weight:600;letter-spacing:-0.035em;margin-bottom:4px}
+.login-sub{font-size:13px;color:var(--t1);margin-bottom:28px;line-height:1.5}
+.login-err{background:var(--rdb);border:1px solid var(--rdbd);border-radius:var(--r);padding:10px 14px;font-size:13px;color:var(--rd);margin-bottom:16px;display:none}
+.login-success{background:var(--grb);border:1px solid var(--grbd);border-radius:var(--r);padding:10px 14px;font-size:13px;color:var(--gr);margin-bottom:16px;display:none}
+.login-actions{display:flex;flex-direction:column;gap:10px;margin-top:20px}
+.btn-login{background:var(--p);color:#fff;border:none;padding:12px;border-radius:var(--r);font-family:var(--f);font-size:14px;font-weight:500;cursor:pointer;transition:background .15s;width:100%}
+.btn-login:hover{background:#8f82f9}
+.login-link{background:transparent;border:none;color:var(--p3);font-family:var(--f);font-size:13px;cursor:pointer;padding:0;text-align:center}
+.login-link:hover{text-decoration:underline}
+.login-footer{text-align:center;margin-top:20px;font-size:12px;color:var(--t2)}
+.login-view{display:none}
+.login-view.active{display:block}
+/* ── NAV USER CHIP ── */
+.nav-user-chip{display:none;align-items:center;gap:8px;background:var(--s3);border:1px solid var(--b1);border-radius:20px;padding:4px 12px 4px 4px;font-size:12px;color:var(--t1);cursor:pointer;transition:all .15s}
+.nav-user-chip:hover{border-color:var(--b2);color:var(--t0)}
+.nav-user-av{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--p2));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#fff}
+/* Print */
+/* memo overlay — visible in screen + print */
+#memo-overlay{display:none;position:fixed;inset:0;z-index:9999;background:#1a1f6e;flex-direction:column}
+#memo-overlay.show{display:flex}
+#memo-frame{flex:1;width:100%;border:none;background:#fff}
+@media print{body>*{display:none!important}#memo-overlay{display:none!important}}
+
+/* Animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.fu{animation:fadeUp .4s cubic-bezier(.16,1,.3,1) both}
+.d1{animation-delay:.05s}.d2{animation-delay:.1s}.d3{animation-delay:.16s}.d4{animation-delay:.22s}
+</style>
+</head>
+<body>
+
+<!-- Login Screen -->
+<div id="login-screen">
+  <div class="login-wrap">
+    <div class="login-logo">
+      <svg viewBox="0 0 36 36" fill="none" width="40" height="40" xmlns="http://www.w3.org/2000/svg"><rect width="36" height="36" rx="9" fill="#1a1f6e"/><rect x="6" y="9" width="24" height="5" rx="2.5" fill="white" opacity="0.95"/><rect x="9" y="16" width="18" height="5" rx="2.5" fill="#a89af9"/><rect x="13" y="23" width="10" height="5" rx="2.5" fill="#3dd68c"/></svg>
+      <span class="login-logo-name">Praevix<em>AI</em></span>
+    </div>
+    <div class="login-card">
+
+      <!-- Login view -->
+      <div class="login-view active" id="lv-login">
+        <div class="login-title">Welcome back</div>
+        <div class="login-sub">Sign in to your PE Intelligence workspace</div>
+        <div class="login-err" id="login-err">Incorrect username or password. Please try again.</div>
+        <div class="login-success" id="login-success"></div>
+        <div class="field">
+          <label>Username or Email</label>
+          <input type="text" id="login-user" placeholder="admin or your email" autocomplete="username" autocapitalize="none"/>
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" id="login-pass" placeholder="Enter your password" autocomplete="current-password"/>
+        </div>
+        <div class="login-actions">
+          <button class="btn-login" onclick="doLogin()">Sign in</button>
+          <button class="login-link" onclick="showView('lv-forgot')">Forgot password?</button>
+        </div>
+      </div>
+
+      <!-- Forgot password view -->
+      <div class="login-view" id="lv-forgot">
+        <div class="login-title">Reset password</div>
+        <div class="login-sub">Enter your registered email and we'll let you set a new password.</div>
+        <div class="login-err" id="forgot-err"></div>
+        <div class="field">
+          <label>Email address</label>
+          <input type="email" id="reset-email" placeholder="your@email.com" autocomplete="email"/>
+        </div>
+        <div class="login-actions">
+          <button class="btn-login" onclick="doSendReset()">Continue</button>
+          <button class="login-link" onclick="showView('lv-login')">← Back to sign in</button>
+        </div>
+      </div>
+
+      <!-- Set new password view -->
+      <div class="login-view" id="lv-reset">
+        <div class="login-title">Set new password</div>
+        <div class="login-sub">Choose a strong password for your account.</div>
+        <div class="login-err" id="reset-err"></div>
+        <div class="field">
+          <label>New password</label>
+          <input type="password" id="reset-new-pass" placeholder="Min. 6 characters" autocomplete="new-password"/>
+        </div>
+        <div class="field">
+          <label>Confirm new password</label>
+          <input type="password" id="reset-confirm-pass" placeholder="Repeat new password" autocomplete="new-password"/>
+        </div>
+        <div class="login-actions">
+          <button class="btn-login" onclick="doResetPassword()">Save new password</button>
+          <button class="login-link" onclick="showView('lv-login')">← Back to sign in</button>
+        </div>
+      </div>
+
+    </div>
+    <div class="login-footer">© 2025–2026 Nishant Prabhakar · Praevix PE Intelligence</div>
+  </div>
+</div>
+
+<!-- Settings Modal -->
+<div class="overlay" id="cfg-overlay">
+  <div class="modal">
+    <button class="modal-x" onclick="closeCfg()">✕</button>
+    <h2>AI provider</h2>
+    <p class="sub">Praevix works out of the box — no API key required. Optionally switch to a provider with your own key for higher rate limits.</p>
+
+    <div class="provider-grid">
+      <div class="prov active" id="prov-pollinations" onclick="selProv('pollinations')" style="grid-column:1/-1;border-color:rgba(61,214,140,0.35);background:rgba(61,214,140,0.06)">
+        <div class="prov-name" style="color:#3dd68c">Pollinations.ai <span style="font-size:10px;background:rgba(61,214,140,0.15);color:#3dd68c;border:1px solid rgba(61,214,140,0.3);padding:2px 7px;border-radius:4px;margin-left:6px;font-weight:500">DEFAULT</span></div>
+        <div class="prov-tag" style="color:#3dd68c;opacity:.8">✓ No API key — completely free &amp; unlimited</div>
+      </div>
+      <div class="prov" id="prov-groq" onclick="selProv('groq')">
+        <div class="prov-name">Groq</div>
+        <div class="prov-tag">Free key — no card required</div>
+      </div>
+      <div class="prov" id="prov-gemini" onclick="selProv('gemini')">
+        <div class="prov-name">Google Gemini</div>
+        <div class="prov-tag">Free key available</div>
+      </div>
+      <div class="prov" id="prov-openrouter" onclick="selProv('openrouter')">
+        <div class="prov-name">OpenRouter</div>
+        <div class="prov-tag">Free models available</div>
+      </div>
+      <div class="prov" id="prov-anthropic" onclick="selProv('anthropic')">
+        <div class="prov-name">Anthropic Claude</div>
+        <div class="prov-tag paid">Paid credits required</div>
+      </div>
+    </div>
+
+    <div class="hint" id="cfg-hint" style="margin-bottom:14px;padding:10px 13px;background:rgba(61,214,140,0.07);border-radius:8px;border:1px solid rgba(61,214,140,0.2)">
+      <strong style="color:#3dd68c">✓ No API key needed.</strong> Pollinations.ai provides free, unlimited AI inference. Just select a model and start researching.
+    </div>
+
+    <div class="field" id="key-field" style="display:none">
+      <label>API Key</label>
+      <input type="password" id="cfg-key" placeholder="Paste your API key here…"/>
+    </div>
+
+    <div class="field">
+      <label>Model</label>
+      <select id="cfg-model">
+        <option value="openai">OpenAI (GPT-4o · recommended)</option>
+      </select>
+    </div>
+    <hr style="border:none;border-top:1px solid var(--b0);margin:20px 0"/>
+    <div style="font-size:12px;font-weight:500;color:var(--t2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">Data Enrichment <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--gr);margin-left:6px">Optional</span></div>
+    <div class="field">
+      <label>Tracxn API Key</label>
+      <input type="password" id="cfg-tracxn" placeholder="Paste your Tracxn API key…"/>
+      <div class="hint">When set, real funding rounds, investors &amp; company data from <a href="https://platform.tracxn.com" target="_blank">Tracxn</a> are injected into every report — replacing AI estimates with verified facts.</div>
+    </div>
+
+    <div class="modal-foot">
+      <button class="btn-ghost" onclick="closeCfg()">Cancel</button>
+      <button class="btn-prim" onclick="saveCfg()">Save &amp; apply</button>
+    </div>
+  </div>
+</div>
+
+<!-- Nav -->
+<nav>
+  <div class="brand" onclick="goHome()">
+    <svg class="brand-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="32" height="32" rx="7" fill="#1a1f6e"/>
+      <rect x="5" y="8" width="22" height="4.5" rx="2.25" fill="white" opacity="0.95"/>
+      <rect x="8" y="14.5" width="16" height="4.5" rx="2.25" fill="#a89af9"/>
+      <rect x="11" y="21" width="10" height="4.5" rx="2.25" fill="#3dd68c"/>
+    </svg>
+    <span class="brand-name">Praevix<em>AI</em></span>
+  </div>
+  <div class="nav-r">
+    <div class="nav-badge">PE Intelligence</div>
+    <div class="nav-live" id="tracxn-badge" style="display:none;background:rgba(61,214,140,0.08);border:1px solid rgba(61,214,140,0.25);border-radius:20px;padding:3px 10px;font-size:11px;color:#3dd68c;gap:5px"><span style="width:6px;height:6px;border-radius:50%;background:#3dd68c;box-shadow:0 0 6px #3dd68c;display:inline-block"></span>Tracxn</div>
+    <div class="nav-live"><span></span>AI Ready</div>
+    <div class="nav-user-chip" id="nav-user-chip" onclick="doLogout()" title="Click to sign out">
+      <div class="nav-user-av" id="nav-user-av"></div>
+      <span id="nav-user-name"></span>
+    </div>
+    <button class="nav-btn" onclick="openCfg()" title="Settings">⚙</button>
+  </div>
+</nav>
+
+<!-- Home -->
+<div id="home">
+  <div class="hero fu">
+    <div class="eyebrow">◈ Private Equity Intelligence Platform</div>
+    <h1>Institutional research<br/>on <span class="g">any company</span>,<br/>in seconds.</h1>
+    <p class="hero-p">Full diligence reports — financials, fundraising rounds, investors, cap table, competitive landscape, risk flags — synthesised from deep market data.</p>
+
+    <div class="nokey" id="nokey-warn" onclick="openCfg()" style="display:none">
+      ⚠ API key required for the selected provider — click to configure.
+    </div>
+
+    <div class="search-box fu d1">
+      <div class="search-ico">⌕</div>
+      <input id="q" type="text" placeholder="Enter company name — Razorpay, Stripe, Zepto, Groww…" autocomplete="off"/>
+      <button class="search-go" onclick="go()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><path d="m19 19-3.5-3.5"/></svg>
+        Research
+      </button>
+    </div>
+
+    <p class="chips-label fu d2">Popular searches</p>
+    <div class="chips fu d2">
+      <span class="chip" onclick="qs('Razorpay')">Razorpay</span>
+      <span class="chip" onclick="qs('Meesho')">Meesho</span>
+      <span class="chip" onclick="qs('PhonePe')">PhonePe</span>
+      <span class="chip" onclick="qs('Zepto')">Zepto</span>
+      <span class="chip" onclick="qs('CRED')">CRED</span>
+      <span class="chip" onclick="qs('Groww')">Groww</span>
+      <span class="chip" onclick="qs('Nykaa')">Nykaa</span>
+      <span class="chip" onclick="qs('Ola Electric')">Ola Electric</span>
+      <span class="chip" onclick="qs('OYO')">OYO</span>
+      <span class="chip" onclick="qs('Rapido')">Rapido</span>
+      <span class="chip" onclick="qs('Stripe')">Stripe</span>
+      <span class="chip" onclick="qs('Polygon')">Polygon</span>
+      <span class="chip" onclick="qs('OpenAI')">OpenAI</span>
+      <span class="chip" onclick="qs('Klarna')">Klarna</span>
+    </div>
+  </div>
+
+  <div class="feat-grid fu d3">
+    <div class="feat"><div class="feat-i">🏢</div><div class="feat-t">Business overview</div><div class="feat-s">Profile, moat, market size</div></div>
+    <div class="feat"><div class="feat-i">📦</div><div class="feat-t">Products & model</div><div class="feat-s">Revenue streams, GTM, unit econ</div></div>
+    <div class="feat"><div class="feat-i">📊</div><div class="feat-t">Financials & ratios</div><div class="feat-s">Revenue, EBITDA, ARR, EV multiples</div></div>
+    <div class="feat"><div class="feat-i">💰</div><div class="feat-t">Fundraising history</div><div class="feat-s">All rounds, valuations, deal terms</div></div>
+    <div class="feat"><div class="feat-i">👥</div><div class="feat-t">Investors & cap table</div><div class="feat-s">Ownership, leads, board seats</div></div>
+    <div class="feat"><div class="feat-i">⚠</div><div class="feat-t">Risks & diligence</div><div class="feat-s">Red flags, regulatory, key Qs</div></div>
+  </div>
+</div>
+
+<!-- Loading -->
+<div id="loading">
+  <div class="load-card">
+    <div class="load-top">
+      <div class="spin"></div>
+      <div>
+        <div class="load-name">Researching <strong id="ld-co" style="color:var(--p3)"></strong></div>
+        <div class="load-sub">Research in progress — typically 15–30 seconds</div>
+      </div>
+    </div>
+    <div class="steps">
+      <div class="stp" id="s1"><div class="stp-dot"></div><span id="s1-txt">Identifying company profile &amp; sector</span></div>
+      <div class="stp" id="s2"><div class="stp-dot"></div>Fetching verified data from Tracxn</div>
+      <div class="stp" id="s3"><div class="stp-dot"></div>Analysing business model &amp; products</div>
+      <div class="stp" id="s4"><div class="stp-dot"></div>Compiling fundraising history &amp; valuations</div>
+      <div class="stp" id="s5"><div class="stp-dot"></div>Mapping investor base &amp; cap table</div>
+      <div class="stp" id="s6"><div class="stp-dot"></div>Extracting financials &amp; key ratios</div>
+      <div class="stp" id="s7"><div class="stp-dot"></div>Generating risk &amp; diligence analysis</div>
+    </div>
+  </div>
+</div>
+
+<!-- Report -->
+<div id="report"></div>
+
+<footer>
+  <div class="ft-brand">
+    <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="7" fill="#1a1f6e"/><rect x="5" y="8" width="22" height="4.5" rx="2.25" fill="white" opacity="0.95"/><rect x="8" y="14.5" width="16" height="4.5" rx="2.25" fill="#a89af9"/><rect x="11" y="21" width="10" height="4.5" rx="2.25" fill="#3dd68c"/></svg>
+    Praevix · © 2025–2026 Nishant Prabhakar
+  </div>
+  <div class="ft-disc">For informational purposes only. Not investment advice. Independently verify all data before making investment decisions. · <a href="#" onclick="showLicense();return false;" style="color:var(--t2);text-decoration:underline;">Licence</a></div>
+</footer>
+
+<!-- Licence modal -->
+<div id="licence-modal" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(9,9,14,0.92);backdrop-filter:blur(8px);align-items:center;justify-content:center;">
+  <div style="background:#14141e;border:1px solid rgba(124,110,247,0.3);border-radius:16px;max-width:560px;width:calc(100% - 40px);padding:36px 36px 28px;font-family:'Inter',system-ui,sans-serif;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;">
+      <svg viewBox="0 0 36 36" fill="none" width="38" height="38"><rect width="36" height="36" rx="9" fill="#1a1f6e"/><rect x="6" y="9" width="24" height="5" rx="2.5" fill="white" opacity="0.95"/><rect x="9" y="16" width="18" height="5" rx="2.5" fill="#a89af9"/><rect x="13" y="23" width="10" height="5" rx="2.5" fill="#3dd68c"/></svg>
+      <div>
+        <div style="font-size:17px;font-weight:600;color:#f2f2f8;">Praevix PE Intelligence</div>
+        <div style="font-size:12px;color:#9090a8;margin-top:2px;">© 2025–2026 Nishant Prabhakar · End-User Licence Agreement</div>
+      </div>
+    </div>
+    <div style="background:#0d0d16;border-radius:10px;padding:18px 20px;max-height:240px;overflow-y:auto;font-size:12.5px;line-height:1.7;color:#9090a8;margin-bottom:22px;">
+      <p style="margin-bottom:10px;color:#f2f2f8;font-weight:500;">IMPORTANT — READ CAREFULLY BEFORE USE</p>
+      <p style="margin-bottom:8px;">This software (<strong style="color:#f2f2f8;">Praevix PE Intelligence</strong>) is the exclusive intellectual property of <strong style="color:#f2f2f8;">Nishant Prabhakar</strong> ("Licensor"), protected under applicable copyright and intellectual property laws.</p>
+      <p style="margin-bottom:8px;"><strong style="color:#f2f2f8;">Grant of Licence.</strong> The Licensor grants you a limited, non-exclusive, non-transferable, non-sublicensable licence to use this software solely for your own internal business purposes.</p>
+      <p style="margin-bottom:8px;"><strong style="color:#f2f2f8;">Restrictions.</strong> You may not: (a) copy, reproduce, or redistribute this software or its source code; (b) modify, adapt, translate, or create derivative works; (c) reverse-engineer, decompile, or disassemble the software; (d) sell, rent, lease, or sublicence the software to any third party; (e) remove or alter any copyright or proprietary notices.</p>
+      <p style="margin-bottom:8px;"><strong style="color:#f2f2f8;">Disclaimer.</strong> This software generates research reports for informational purposes only. It does not constitute investment advice, financial guidance, or a recommendation to buy or sell any security. The Licensor makes no warranties, express or implied, as to the accuracy or completeness of any output. You assume full responsibility for any decisions made based on this software.</p>
+      <p style="margin-bottom:8px;"><strong style="color:#f2f2f8;">Limitation of Liability.</strong> To the maximum extent permitted by law, the Licensor shall not be liable for any direct, indirect, incidental, or consequential damages arising from use of this software.</p>
+      <p><strong style="color:#f2f2f8;">Governing Law.</strong> This agreement is governed by the laws of India. Any disputes shall be subject to the exclusive jurisdiction of courts in Mumbai, India.</p>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+      <input type="checkbox" id="lic-check" style="width:16px;height:16px;accent-color:#7c6ef7;cursor:pointer;flex-shrink:0;"/>
+      <label for="lic-check" style="font-size:13px;color:#9090a8;cursor:pointer;">I have read and agree to the terms of this End-User Licence Agreement</label>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;">
+      <button id="lic-decline" onclick="declineLicence()" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:#9090a8;padding:9px 20px;border-radius:8px;font-family:inherit;font-size:13px;cursor:pointer;">Decline</button>
+      <button id="lic-accept" onclick="acceptLicence()" style="background:#7c6ef7;border:none;color:#fff;padding:9px 24px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;opacity:0.4;pointer-events:none;">Accept &amp; Continue</button>
+    </div>
+  </div>
+</div>
+
+<!-- Memo overlay (no popup needed) -->
+<div id="memo-overlay">
+  <div id="memo-topbar" style="background:#1a1f6e;padding:10px 28px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
+    <span style="color:rgba(255,255,255,.7);font-size:13px;font-family:var(--f)">Investment memo ready — <strong style="color:#fff">File › Print → Save as PDF</strong></span>
+    <div style="display:flex;gap:10px">
+      <button onclick="closeMemo()" style="background:transparent;border:1px solid rgba(255,255,255,.3);color:#fff;padding:7px 16px;border-radius:7px;font-family:var(--f);font-size:13px;cursor:pointer">✕ Close</button>
+      <button onclick="document.getElementById('memo-frame').contentWindow.print()" style="background:#fff;border:none;color:#1a1f6e;padding:7px 18px;border-radius:7px;font-family:var(--f);font-size:13px;font-weight:600;cursor:pointer">⬇ Save as PDF</button>
+    </div>
+  </div>
+  <iframe id="memo-frame" style="flex:1;width:100%;border:none;background:#fff"></iframe>
+</div>
+
+<script>
+/* ── LICENCE GATE ── */
+(function(){
+  const modal = document.getElementById('licence-modal');
+  const check = document.getElementById('lic-check');
+  const acceptBtn = document.getElementById('lic-accept');
+
+  // Enable Accept button only when checkbox is ticked
+  check.addEventListener('change', () => {
+    acceptBtn.style.opacity = check.checked ? '1' : '0.4';
+    acceptBtn.style.pointerEvents = check.checked ? 'auto' : 'none';
+  });
+
+  // Show modal on first visit (no stored acceptance)
+  if(!localStorage.getItem('clarix_licence_v1')){
+    modal.style.display = 'flex';
+  }
+})();
+
+function acceptLicence(){
+  localStorage.setItem('clarix_licence_v1', new Date().toISOString());
+  document.getElementById('licence-modal').style.display = 'none';
+}
+
+function declineLicence(){
+  document.getElementById('licence-modal').style.display = 'none';
+  // Blank the app — user cannot proceed without accepting
+  document.body.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#09090e;font-family:Inter,sans-serif;color:#9090a8;gap:16px;"><svg viewBox="0 0 32 32" fill="none" width="48"><rect width="32" height="32" rx="7" fill="#1a1f6e"/><rect x="5" y="8" width="22" height="4.5" rx="2.25" fill="white" opacity="0.95"/><rect x="8" y="14.5" width="16" height="4.5" rx="2.25" fill="#a89af9"/><rect x="11" y="21" width="10" height="4.5" rx="2.25" fill="#3dd68c"/></svg><p style="font-size:15px;color:#f2f2f8;">Licence declined</p><p style="font-size:13px;">You must accept the EULA to use Praevix.</p><button onclick="location.reload()" style="margin-top:8px;background:#7c6ef7;border:none;color:#fff;padding:10px 24px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;">Review licence again</button></div>';
+}
+
+function showLicense(){
+  const modal = document.getElementById('licence-modal');
+  if(modal){ modal.style.display = 'flex'; }
+}
+
+/* ── PROVIDER CONFIG ── */
+const PROVIDERS = {
+  pollinations:{
+    url:'https://text.pollinations.ai/openai',
+    models:[
+      {v:'openai',l:'OpenAI (GPT-4o · recommended)'},
+      {v:'openai-large',l:'OpenAI Large (best quality)'},
+      {v:'mistral',l:'Mistral Large'},
+      {v:'llama',l:'Llama 3.3 70B'},
+    ],
+    noKey: true,
+    hint:'<strong style="color:#3dd68c">✓ No API key needed.</strong> Pollinations.ai provides free AI inference. Just select a model and start researching.',
+    auth: ()=>({}),
+    body:(msgs,model)=>JSON.stringify({model,messages:msgs,max_tokens:4096,temperature:0.3,response_format:{type:'json_object'}}),
+    parse: d => d.choices?.[0]?.message?.content || ''
+  },
+  groq:{
+    url:'https://api.groq.com/openai/v1/chat/completions',
+    models:[
+      {v:'llama-3.3-70b-versatile',l:'Llama 3.3 70B (recommended)'},
+      {v:'llama-3.1-8b-instant',l:'Llama 3.1 8B (fast)'},
+      {v:'mixtral-8x7b-32768',l:'Mixtral 8×7B'},
+    ],
+    hint:'Get a free key at <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a> — sign up free, no card needed.',
+    auth: k => ({'Authorization':'Bearer '+k}),
+    body:(msgs,model)=>JSON.stringify({model,messages:msgs,max_tokens:8000,temperature:0.3}),
+    parse: d => d.choices?.[0]?.message?.content || ''
+  },
+  gemini:{
+    url: k => `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${k}`,
+    models:[
+      {v:'gemini-2.0-flash',l:'Gemini 2.0 Flash (recommended)'},
+      {v:'gemini-1.5-pro-latest',l:'Gemini 1.5 Pro'},
+    ],
+    hint:'Get a free key at <a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com</a> — completely free.',
+    auth: ()=>({}),
+    body:(msgs,model)=>{
+      const sys = msgs.find(m=>m.role==='system')?.content||'';
+      const usr = msgs.find(m=>m.role==='user')?.content||'';
+      return JSON.stringify({contents:[{parts:[{text:sys+'\n\n'+usr}]}],generationConfig:{maxOutputTokens:8000,temperature:0.3}});
+    },
+    parse: d => d.candidates?.[0]?.content?.parts?.[0]?.text || ''
+  },
+  openrouter:{
+    url:'https://openrouter.ai/api/v1/chat/completions',
+    models:[
+      {v:'meta-llama/llama-3.1-8b-instruct:free',l:'Llama 3.1 8B (free)'},
+      {v:'mistralai/mistral-7b-instruct:free',l:'Mistral 7B (free)'},
+      {v:'google/gemma-2-9b-it:free',l:'Gemma 2 9B (free)'},
+    ],
+    hint:'Get a free key at <a href="https://openrouter.ai/keys" target="_blank">openrouter.ai/keys</a> — free models available.',
+    auth: k=>({'Authorization':'Bearer '+k,'HTTP-Referer':'https://praevix.ai','X-Title':'Praevix PE Research'}),
+    body:(msgs,model)=>JSON.stringify({model,messages:msgs,max_tokens:8000}),
+    parse: d => d.choices?.[0]?.message?.content || ''
+  },
+  anthropic:{
+    url:'https://api.anthropic.com/v1/messages',
+    models:[
+      {v:'claude-sonnet-4-6',l:'Claude Sonnet 4.6 (best quality)'},
+      {v:'claude-haiku-4-5-20251001',l:'Claude Haiku (faster)'},
+    ],
+    hint:'Get a key at <a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com</a> — requires paid credits.',
+    auth: k=>({'x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'}),
+    body:(msgs,model)=>{
+      const sys=msgs.find(m=>m.role==='system')?.content||'';
+      const user=msgs.filter(m=>m.role!=='system');
+      return JSON.stringify({model,max_tokens:8000,system:sys,messages:user});
+    },
+    parse: d => d.content?.[0]?.text || ''
+  }
+};
+
+let currentProv = localStorage.getItem('cx_prov')||'pollinations';
+
+function selProv(p){
+  currentProv = p;
+  document.querySelectorAll('.prov').forEach(el=>el.classList.remove('active'));
+  document.getElementById('prov-'+p).classList.add('active');
+  const cfg = PROVIDERS[p];
+  document.getElementById('cfg-hint').innerHTML = cfg.hint;
+  const sel = document.getElementById('cfg-model');
+  sel.innerHTML = cfg.models.map(m=>`<option value="${m.v}">${m.l}</option>`).join('');
+  const savedModel = localStorage.getItem('cx_model_'+p);
+  if(savedModel) sel.value = savedModel;
+  // Show/hide key field depending on whether provider needs one
+  const keyField = document.getElementById('key-field');
+  keyField.style.display = cfg.noKey ? 'none' : '';
+  if(!cfg.noKey) document.getElementById('cfg-key').value = localStorage.getItem('cx_key_'+p)||'';
+}
+
+function openCfg(){
+  selProv(currentProv);
+  document.getElementById('cfg-tracxn').value = localStorage.getItem('cx_tracxn_key')||'';
+  document.getElementById('cfg-overlay').classList.add('show');
+}
+function closeCfg(){ document.getElementById('cfg-overlay').classList.remove('show'); }
+document.getElementById('cfg-overlay').addEventListener('click',e=>{ if(e.target===document.getElementById('cfg-overlay')) closeCfg(); });
+
+function saveCfg(){
+  const cfg = PROVIDERS[currentProv];
+  const model = document.getElementById('cfg-model').value;
+  if(!cfg.noKey){
+    const key = document.getElementById('cfg-key').value.trim();
+    if(!key){ document.getElementById('cfg-key').focus(); return; }
+    localStorage.setItem('cx_key_'+currentProv, key);
+  }
+  localStorage.setItem('cx_prov', currentProv);
+  localStorage.setItem('cx_model_'+currentProv, model);
+  const tracxnKey = document.getElementById('cfg-tracxn').value.trim();
+  if(tracxnKey) localStorage.setItem('cx_tracxn_key', tracxnKey);
+  else localStorage.removeItem('cx_tracxn_key');
+  closeCfg();
+  checkKey();
+}
+
+function getKey(){ return localStorage.getItem('cx_key_'+currentProv)||''; }
+function getModel(){ return localStorage.getItem('cx_model_'+currentProv) || PROVIDERS[currentProv].models[0].v; }
+
+function needsKey(){ return !PROVIDERS[currentProv].noKey; }
+
+function checkKey(){
+  const w = document.getElementById('nokey-warn');
+  w.style.display = (needsKey() && !getKey()) ? 'block' : 'none';
+  const tb = document.getElementById('tracxn-badge');
+  if(tb) tb.style.display = localStorage.getItem('cx_tracxn_key') ? 'flex' : 'none';
+}
+
+/* ── SEARCH ── */
+document.getElementById('q').addEventListener('keydown',e=>{ if(e.key==='Enter') go(); });
+function qs(n){ document.getElementById('q').value=n; go(); }
+
+let stepTimers=[];
+const STPS=['s1','s2','s3','s4','s5','s6','s7'];
+const DELAYS=[0,3000,6000,9500,13000,16000,19000];
+
+function go(){
+  const name = document.getElementById('q').value.trim();
+  if(!name) return document.getElementById('q').focus();
+  if(needsKey() && !getKey()){ openCfg(); return; }
+
+  document.getElementById('home').style.display='none';
+  document.getElementById('loading').style.display='block';
+  document.getElementById('report').style.display='none';
+  document.getElementById('report').innerHTML='';
+  document.getElementById('ld-co').textContent=name;
+
+  STPS.forEach(id=>{ document.getElementById(id).className='stp'; });
+  // Update step 2 label based on whether Tracxn is configured
+  const s2txt = document.querySelector('#s2 .stp-dot').nextSibling;
+  if(s2txt) s2txt.textContent = localStorage.getItem('cx_tracxn_key')
+    ? 'Fetching verified data from Tracxn'
+    : 'Analysing business model & products';
+  stepTimers.forEach(clearTimeout); stepTimers=[];
+  STPS.forEach((id,i)=>{
+    stepTimers.push(setTimeout(()=>{
+      if(i>0) document.getElementById(STPS[i-1]).className='stp done';
+      document.getElementById(id).className='stp on';
+    }, DELAYS[i]));
+  });
+
+  fetchReport(name);
+}
+
+function goHome(){
+  stepTimers.forEach(clearTimeout);
+  document.getElementById('home').style.display='block';
+  document.getElementById('loading').style.display='none';
+  document.getElementById('report').style.display='none';
+  document.getElementById('report').innerHTML='';
+  document.getElementById('q').value='';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ── AI CALL ── */
+const SYSTEM = `You are a Managing Director-level private equity analyst at a top-tier global PE/VC fund (think KKR, Sequoia, General Atlantic). You have 20 years of experience conducting institutional-grade company diligence across US, Europe, and India — growth equity, buyouts, and venture. You write with the precision and depth of a Goldman Sachs equity research initiation report.
+
+Respond ONLY with a single valid JSON object. No markdown, no code fences, no prose outside the JSON.
+
+SCHEMA (every field is required — use null only if genuinely unknown):
+{
+  "company": {
+    "name": string,
+    "description": string (one sharp sentence: what the company does and why it matters),
+    "website": string|null,
+    "founded": string,
+    "hq": string,
+    "sector": string,
+    "subsector": string,
+    "stage": string,
+    "status": string ("Private"|"Public"|"Acquired"|"IPO Filed"),
+    "totalRaised": string,
+    "latestValuation": string,
+    "revenue": string (LTM revenue with units),
+    "employees": string,
+    "founders": string (names and brief 3-word background each)
+  },
+
+  "overview": string (5-6 dense paragraphs. Cover: (1) founding story and problem solved, (2) core business model and how money is made, (3) key milestones and inflection points, (4) strategic moat and defensibility — network effects / switching costs / IP / data / scale, (5) TAM/SAM with credible sizing methodology, (6) where the company stands today in its lifecycle and what the next chapter looks like),
+
+  "businessDetails": {
+    "Business model": string (specific revenue mechanics — subscription, transaction, SaaS, marketplace take-rate, etc.),
+    "Revenue streams": string (break down all revenue lines with rough % contribution),
+    "Key markets": string (geographies and verticals with market penetration estimate),
+    "Go-to-market": string (sales motion — enterprise direct, PLG, channel, etc.),
+    "Unit economics": string (CAC, LTV, payback period, NRR if known),
+    "Regulatory environment": string (key regulatory bodies, licences, compliance obligations),
+    "Technology & IP": string (tech stack differentiation, patents, proprietary data assets)
+  },
+
+  "products": string (4-5 paragraphs: (1) core product and value proposition, (2) product portfolio breadth, (3) key differentiating features vs alternatives, (4) monetisation model per product line, (5) recent product developments and roadmap direction),
+
+  "investmentThesis": {
+    "summary": string (2-3 sentences — the core PE investment thesis in plain language),
+    "bullCase": string (3-4 sentences — the best-case scenario: market capture, margin expansion, multiple expansion),
+    "bearCase": string (3-4 sentences — what kills the thesis: competition, regulation, unit economics deterioration, founder risk),
+    "keyQuestions": string[] (5-7 specific due diligence questions a PE IC would ask before approving this deal — specific, actionable, hard-hitting)
+  },
+
+  "managementTeam": [
+    { "name": string, "title": string, "background": string (2 sentences: prior roles and why relevant), "tenureYears": number }
+  ],
+
+  "financialHighlight": string (2-3 sentences: headline financial narrative with specific numbers — revenue trajectory, burn rate, path to profitability),
+
+  "financials": [{ "year": string, "revenue": number, "ebitda": number|null, "employees": number, "note": string }],
+
+  "unitEconomics": {
+    "ltv": string, "cac": string, "ltvCacRatio": string, "paybackMonths": string,
+    "nrr": string, "grossMargin": string, "burnMultiple": string, "arpu": string
+  },
+
+  "keyRatios": [{ "metric": string, "value": string, "benchmark": string (industry benchmark for context), "note": string }],
+
+  "marketSizing": {
+    "tam": string, "sam": string, "som": string,
+    "methodology": string (2-3 sentences explaining the sizing approach — bottoms-up or tops-down),
+    "growthRate": string (market CAGR)
+  },
+
+  "rounds": [{ "date": string, "round": string, "amount": string, "valuation": string, "lead": string, "notable": string (1 sentence on significance of the round) }],
+  "roundsChart": { "labels": string[], "values": number[], "colors": string[] },
+
+  "investors": [{ "name": string, "type": string, "country": string, "rounds": string, "isLead": boolean, "isFirst": boolean, "portfolioSignal": string (1 sentence on what this investor backing signals) }],
+
+  "shareholders": [{ "name": string, "type": string, "stake": string }],
+
+  "peerComps": [
+    { "name": string, "status": string ("Public"|"Private"|"Acquired"), "evRevenue": string, "evEbitda": string, "revenueGrowth": string, "grossMargin": string, "lastValuation": string, "note": string }
+  ],
+
+  "competitiveContext": string (3-4 sentences: competitive dynamics, market structure, where the subject company sits in the competitive map),
+
+  "competitors": [{ "name": string, "desc": string, "stage": string, "raised": string, "country": string, "differentiator": string (what makes THIS company different from this competitor) }],
+
+  "exitScenarios": [
+    { "type": string ("Strategic M&A"|"PE Buyout"|"IPO"|"Secondary"), "timeline": string, "impliedMultiple": string, "targetBuyers": string, "rationale": string (2 sentences) }
+  ],
+
+  "risks": [{ "title": string, "desc": string (2-3 sentences with specific evidence or examples), "level": "h"|"m"|"l", "category": string ("Business"|"Financial"|"Regulatory"|"Competitive"|"Execution"|"Macro"), "mitigation": string (1 sentence on how this risk could be mitigated) }],
+
+  "diligenceAreas": [{ "area": string, "detail": string (specific workstream — who to call, what data to request, what model to build), "priority": "high"|"medium" }],
+
+  "aiSummary": string (5-6 sentences of MD-level synthesis: (1) what kind of company this is, (2) investment thesis in one sentence, (3) the single biggest reason to be excited, (4) the single biggest risk, (5) comparable exits and implied return range, (6) overall verdict — pass/watch/pursue)
+}
+
+QUALITY RULES — non-negotiable:
+- Every text field must be substantive. No filler like "the company is a leader in...". Write like a Goldman analyst who will be embarrassed if this memo has a factual error.
+- financials: 4-5 years, consistent currency (INR Cr for Indian cos, $M for others). Include a note field explaining any estimate vs reported distinction.
+- keyRatios: exactly 10 rows — Revenue CAGR (3yr), Gross Margin, EBITDA Margin, Burn Multiple, LTV/CAC, NRR, EV/Revenue, EV/EBITDA, ARR (if SaaS), Rule of 40. For each, cite an industry benchmark.
+- managementTeam: 4-6 people minimum. Include CEO, CFO, CTO/CPO, and any other C-suite relevant to diligence.
+- peerComps: 5-6 companies. Include a mix of public comps (with real multiples) and recent private transaction comps.
+- exitScenarios: exactly 3 scenarios (Strategic M&A, IPO, PE Secondary).
+- risks: exactly 8 risks, at least 2 high-severity.
+- diligenceAreas: 8-10 items, mix of high and medium priority.
+- investors: all known institutional investors with portfolioSignal populated.
+- rounds: oldest first, all known rounds.
+- shareholders: must sum to ~100%.
+- competitors: exactly 6 peers.
+- Return ONLY valid JSON. Do not truncate any field.`;
+
+/* ── TRACXN DATA ENRICHMENT ── */
+async function fetchTracxnData(company){
+  const key = localStorage.getItem('cx_tracxn_key');
+  if(!key) return null;
+
+  const BASE = 'https://platform.tracxn.com/api/2.2/playground';
+  const headers = { 'Content-Type':'application/json', 'Authorization':'Bearer '+key };
+
+  try {
+    // Search companies by name
+    const searchRes = await fetch(BASE+'/companies', {
+      method:'POST',
+      headers,
+      body: JSON.stringify({
+        filter:{ name: company },
+        size: 3,
+        responseTemplate: ['id','name','shortDescription','stage','website','foundedYear',
+          'totalEquityFunding','latestFundingRound','investors','keyPeople',
+          'locations','primaryTaxonomy','tracxnScore']
+      })
+    });
+
+    if(!searchRes.ok) return null;
+    const searchData = await searchRes.json();
+    const hits = searchData?.data || searchData?.results || searchData?.companies || [];
+    if(!hits.length) return null;
+
+    // Pick best match (exact name match preferred, else first result)
+    const lc = company.toLowerCase();
+    const match = hits.find(h=>(h.name||'').toLowerCase()===lc) || hits[0];
+    if(!match) return null;
+
+    // Fetch funding rounds for this company
+    let rounds = [];
+    try {
+      const frRes = await fetch(BASE+'/companies/'+match.id+'/fundingrounds', { headers });
+      if(frRes.ok){
+        const frData = await frRes.json();
+        rounds = frData?.data || frData?.results || frData?.fundingRounds || [];
+      }
+    } catch(_){}
+
+    return { company: match, rounds };
+  } catch(_){
+    return null;
+  }
+}
+
+function formatTracxnForPrompt(td){
+  if(!td) return '';
+  const { company: c, rounds } = td;
+  const lines = ['=== VERIFIED DATA FROM TRACXN (use this data as ground truth) ==='];
+  if(c.name)              lines.push(`Company: ${c.name}`);
+  if(c.website)           lines.push(`Website: ${c.website}`);
+  if(c.foundedYear)       lines.push(`Founded: ${c.foundedYear}`);
+  if(c.stage)             lines.push(`Stage: ${c.stage}`);
+  if(c.shortDescription)  lines.push(`Description: ${c.shortDescription}`);
+  if(c.locations?.length) lines.push(`HQ: ${c.locations.map(l=>l.city||l.country||l).filter(Boolean).join(', ')}`);
+  if(c.primaryTaxonomy)   lines.push(`Sector: ${JSON.stringify(c.primaryTaxonomy)}`);
+  if(c.totalEquityFunding!=null) lines.push(`Total Equity Raised: ${c.totalEquityFunding}`);
+  if(c.tracxnScore!=null) lines.push(`Tracxn Score: ${c.tracxnScore}`);
+
+  if(c.investors?.length){
+    lines.push('Investors: '+c.investors.map(i=>i.name||i).filter(Boolean).join(', '));
+  }
+  if(c.keyPeople?.length){
+    lines.push('Key People: '+c.keyPeople.map(p=>`${p.name||''}${p.designation?' ('+p.designation+')':''}`).filter(Boolean).join('; '));
+  }
+  if(rounds.length){
+    lines.push('Funding Rounds (verified):');
+    rounds.forEach(r=>{
+      const amt = r.amount ? ` — ${r.amount}` : (r.isAmountUndisclosed ? ' — undisclosed' : '');
+      const invs = r.investors?.length ? ` | Investors: ${r.investors.map(i=>i.name||i).join(', ')}` : '';
+      lines.push(`  • ${r.name||r.date||'Round'}${r.date?' ('+r.date+')':''}${amt}${invs}`);
+    });
+  } else if(c.latestFundingRound){
+    lines.push(`Latest Round: ${JSON.stringify(c.latestFundingRound)}`);
+  }
+  lines.push('=== END TRACXN DATA — fill all other fields with your best analysis ===');
+  return lines.join('\n');
+}
+
+async function fetchReport(company){
+  const prov = PROVIDERS[currentProv];
+  const key = getKey();
+  const model = getModel();
+
+  // Fetch verified Tracxn data first (non-blocking — failure is graceful)
+  const tracxnData = await fetchTracxnData(company);
+  const tracxnBlock = formatTracxnForPrompt(tracxnData);
+
+  const userMsg = tracxnBlock
+    ? `Research company for PE diligence: ${company}\n\n${tracxnBlock}`
+    : `Research company for PE diligence: ${company}`;
+
+  const msgs = [
+    {role:'system', content: SYSTEM},
+    {role:'user', content: userMsg}
+  ];
+
+  try {
+    const url = typeof prov.url === 'function' ? prov.url(key) : prov.url;
+    const headers = {'Content-Type':'application/json', ...prov.auth(key)};
+    const res = await fetch(url, { method:'POST', headers, body: prov.body(msgs, model) });
+
+    if(!res.ok){
+      const errText = await res.text().catch(()=>'');
+      let errMsg = `HTTP ${res.status}`;
+      try{ const ej = JSON.parse(errText); errMsg = ej.error?.message || ej.message || errMsg; }catch(_){}
+      throw new Error(`${errMsg}${res.status===429?' — rate limit reached, try again in a moment':res.status===503?' — AI service unavailable, try again shortly':''}`);
+    }
+    const data = await res.json();
+    const raw = prov.parse(data);
+    if(!raw) throw new Error('Empty response from AI. Please try again.');
+    let report;
+    try {
+      // First try direct parse (works when response_format:json_object is respected)
+      report = JSON.parse(raw);
+    } catch(_) {
+      // Fall back: extract outermost JSON object from the text
+      const jm = raw.match(/\{[\s\S]*\}/);
+      if(!jm) throw new Error('AI did not return valid JSON. Try switching to a different model in Settings.');
+      try { report = JSON.parse(jm[0]); }
+      catch(e2) { throw new Error('Malformed JSON from AI (possibly truncated). Try "OpenAI Large" model for more tokens.'); }
+    }
+    doneLoading();
+    renderReport(report);
+  } catch(e){
+    doneLoading();
+    showErr(e.message, company);
+  }
+}
+
+function doneLoading(){
+  stepTimers.forEach(clearTimeout);
+  STPS.forEach(id=>document.getElementById(id).className='stp done');
+  setTimeout(()=>document.getElementById('loading').style.display='none', 350);
+}
+
+function showErr(msg, company){
+  const r = document.getElementById('report');
+  r.style.display='block';
+  r.innerHTML=`<div style="max-width:560px;margin:40px auto;background:var(--rdb);border:1px solid var(--rdbd);border-radius:var(--rl);padding:28px;text-align:center">
+    <div style="font-size:28px;margin-bottom:12px">⚠</div>
+    <div style="font-size:16px;font-weight:500;margin-bottom:8px;color:var(--rd)">Research failed</div>
+    <div style="font-size:13px;color:var(--t1);margin-bottom:20px;line-height:1.6">${msg}</div>
+    ${msg.includes('401')||msg.includes('auth')||msg.includes('key')?`<div style="font-size:13px;color:var(--am);margin-bottom:16px">Check your API key in settings — it may be invalid or expired.</div>`:''}
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+      <button class="act act-p" onclick="openCfg()">⚙ Check settings</button>
+      <button class="act" onclick="document.getElementById('q').value='${company}';goHome();setTimeout(go,100)">↺ Retry</button>
+      <button class="act" onclick="goHome()">← New search</button>
+    </div>
+  </div>`;
+}
+
+/* ── REPORT RENDER ── */
+function getRB(r){
+  if(!r) return 'rb-o';
+  const s=r.toLowerCase();
+  if(s.includes('pre-seed')||s.includes('angel')) return 'rb-seed';
+  if(s.includes('seed')) return 'rb-seed';
+  if(/series a/.test(s)) return 'rb-a';
+  if(/series b/.test(s)) return 'rb-b';
+  if(/series c/.test(s)) return 'rb-c';
+  if(/series [d-z]/.test(s)||s.includes('late')||s.includes('growth')) return 'rb-late';
+  if(s.includes('ipo')||s.includes('public')) return 'rb-ipo';
+  return 'rb-o';
+}
+
+function sec(ico, title, body, id, cnt=''){
+  return `<div class="sec" id="sc-${id}">
+    <div class="sec-h" onclick="tog('${id}')">
+      <div class="sec-ic">${ico}</div>
+      <span class="sec-tt">${title}</span>
+      ${cnt?`<span class="sec-ct">${cnt}</span>`:''}
+      <span class="sec-arr">▾</span>
+    </div>
+    <div class="sec-b">${body}</div>
+  </div>`;
+}
+function tog(id){ document.getElementById('sc-'+id).classList.toggle('open'); }
+
+function renderReport(d){
+  const co = d.company||{};
+  const nm = co.name||'Company';
+  const init = nm.split(' ').map(w=>w[0]||'').join('').slice(0,2).toUpperCase();
+  window.__rptData = d;
+
+  const tags = [
+    co.sector?`<span class="tag t-bl">${co.sector}</span>`:'',
+    co.subsector?`<span class="tag t-gy">${co.subsector}</span>`:'',
+    co.stage?`<span class="tag t-gr">${co.stage}</span>`:'',
+    co.hq?`<span class="tag t-gy">${co.hq}</span>`:'',
+    co.status?`<span class="tag t-am">${co.status}</span>`:'',
+  ].filter(Boolean).join('');
+
+  const kpis=[
+    {l:'Total raised',v:co.totalRaised||'—',c:'kv-g'},
+    {l:'Valuation',v:co.latestValuation||'—',c:'kv-p'},
+    {l:'Revenue (LTM)',v:co.revenue||'—',c:'kv-b'},
+    {l:'Employees',v:co.employees||'—',c:''},
+    {l:'Founded',v:co.founded||'—',c:''},
+    {l:'HQ',v:co.hq||'—',c:''},
+  ];
+
+  const header=`<div class="rpt-top fu">
+    <div class="rh">
+      <div class="co-av">${init}</div>
+      <div class="co-inf">
+        <div class="co-nm">${nm}</div>
+        <div class="tags">${tags||'<span class="tag t-gy">Private</span>'}</div>
+        ${co.website?`<div style="margin-top:7px"><a href="${co.website}" target="_blank" style="font-size:12px;color:var(--t2);text-decoration:none;font-family:var(--fm)">${co.website}</a></div>`:''}
+      </div>
+    </div>
+    <div class="kpis">${kpis.map(k=>`<div class="kpi"><div class="kpi-l">${k.l}</div><div class="kpi-v ${k.c}">${k.v}</div></div>`).join('')}</div>
+  </div>`;
+
+  const acts=`<div class="rpt-acts fu">
+    <button class="act act-p" onclick="exportMemo()">⬇ Download Report</button>
+    <button class="act" onclick="cpJSON()">⎘ Copy JSON</button>
+    <button class="act" onclick="goHome()">← New search</button>
+  </div>`;
+
+  const aiSum = d.aiSummary?`<div class="ai-sum fu">
+    <div class="ai-sum-label">AI Analyst Summary</div>
+    <p>${d.aiSummary}</p>
+  </div>`:'';
+
+  /* Investment Thesis */
+  const it = d.investmentThesis||{};
+  const thesisBody = it.summary ? `
+    <div class="hl" style="margin-bottom:14px">${it.summary}</div>
+    <div class="two">
+      <div style="background:var(--grb);border:1px solid var(--grbd);border-radius:var(--r);padding:14px 16px">
+        <div style="font-size:10px;color:var(--gr);text-transform:uppercase;letter-spacing:.07em;font-weight:600;margin-bottom:8px">Bull case</div>
+        <div style="font-size:13px;color:var(--t1);line-height:1.7">${it.bullCase||''}</div>
+      </div>
+      <div style="background:var(--rdb);border:1px solid var(--rdbd);border-radius:var(--r);padding:14px 16px">
+        <div style="font-size:10px;color:var(--rd);text-transform:uppercase;letter-spacing:.07em;font-weight:600;margin-bottom:8px">Bear case</div>
+        <div style="font-size:13px;color:var(--t1);line-height:1.7">${it.bearCase||''}</div>
+      </div>
+    </div>
+    ${(it.keyQuestions||[]).length?`<div style="margin-top:14px">
+      <div style="font-size:11px;color:var(--t2);text-transform:uppercase;letter-spacing:.07em;font-weight:500;margin-bottom:10px">IC diligence questions</div>
+      <div style="display:flex;flex-direction:column;gap:7px">${it.keyQuestions.map((q,i)=>`
+        <div style="display:flex;gap:10px;align-items:flex-start;background:var(--b0);border-radius:8px;padding:10px 12px">
+          <span style="font-size:11px;color:var(--p3);font-weight:700;flex-shrink:0;font-family:var(--fm)">${String(i+1).padStart(2,'0')}</span>
+          <span style="font-size:13px;color:var(--t1);line-height:1.6">${q}</span>
+        </div>`).join('')}
+      </div>
+    </div>`:''}` : '<div class="prose"><p>Investment thesis analysis not available.</p></div>';
+
+  /* Overview */
+  const ovBody=`<div class="prose">${(d.overview||'').split(/\n\n+/).filter(Boolean).map(p=>`<p>${p.trim()}</p>`).join('')}</div>
+    ${d.businessDetails?`<div class="dl" style="margin-top:18px">${Object.entries(d.businessDetails).map(([k,v])=>`<div class="dlr"><span class="dlk">${k}</span><span class="dlv">${v}</span></div>`).join('')}</div>`:''}`;
+
+  /* Products */
+  const prBody=`<div class="prose">${(d.products||'').split(/\n\n+/).filter(Boolean).map(p=>`<p>${p.trim()}</p>`).join('')}</div>`;
+
+  /* Management team */
+  const mgmt = d.managementTeam||[];
+  const mgmtBody = mgmt.length ? `<div class="inv-grid">${mgmt.map(m=>`<div class="inv">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+      <div style="width:34px;height:34px;border-radius:50%;background:var(--pg);border:1px solid var(--p2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--p3);flex-shrink:0">${(m.name||'?').charAt(0)}</div>
+      <div>
+        <div class="inv-n" style="font-size:14px">${m.name}</div>
+        <div class="inv-m" style="color:var(--p3);font-size:11px">${m.title||''}</div>
+      </div>
+    </div>
+    <div style="font-size:12px;color:var(--t1);line-height:1.6">${m.background||''}</div>
+    ${m.tenureYears?`<div style="margin-top:6px;font-size:11px;color:var(--t2)">${m.tenureYears}yr tenure</div>`:''}
+  </div>`).join('')}</div>` : '<div class="prose"><p>Management team data not available.</p></div>';
+
+  /* Financials */
+  const fin=d.financials||[];
+  const ue=d.unitEconomics||{};
+  const ueFields=[['LTV',ue.ltv],['CAC',ue.cac],['LTV/CAC',ue.ltvCacRatio],['CAC Payback',ue.paybackMonths],['NRR',ue.nrr],['Gross Margin',ue.grossMargin],['Burn Multiple',ue.burnMultiple],['ARPU',ue.arpu]].filter(x=>x[1]&&x[1]!=='N/A');
+  const finBody=`
+    ${d.financialHighlight?`<div class="hl">${d.financialHighlight}</div>`:''}
+    ${fin.length?`<div class="two" style="margin-bottom:18px">
+      <div><div class="ch-wrap" style="height:180px"><canvas id="ch-rev" role="img" aria-label="Revenue chart">Revenue trend</canvas></div><div class="ch-lbl">Revenue</div></div>
+      <div><div class="ch-wrap" style="height:180px"><canvas id="ch-emp" role="img" aria-label="Headcount chart">Headcount trend</canvas></div><div class="ch-lbl">Headcount</div></div>
+    </div>`:''}
+    ${ueFields.length?`<div style="margin-bottom:18px">
+      <div style="font-size:11px;color:var(--t2);text-transform:uppercase;letter-spacing:.07em;font-weight:500;margin-bottom:10px">Unit economics</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">${ueFields.map(([k,v])=>`
+        <div style="background:var(--b0);border-radius:8px;padding:10px 12px;border:1px solid var(--b1)">
+          <div style="font-size:10px;color:var(--t2);margin-bottom:4px">${k}</div>
+          <div style="font-size:16px;font-weight:600;color:var(--p3);font-family:var(--fm)">${v}</div>
+        </div>`).join('')}
+      </div>
+    </div>`:''}
+    ${(d.keyRatios||[]).length?`<table class="dt">
+      <thead><tr><th>Metric</th><th>Value</th><th>Benchmark</th><th>Notes</th></tr></thead>
+      <tbody>${(d.keyRatios||[]).map(r=>`<tr><td class="td-p">${r.metric}</td><td class="mn" style="color:var(--p3)">${r.value}</td><td style="color:var(--t2);font-size:12px">${r.benchmark||'—'}</td><td style="color:var(--t2)">${r.note||'—'}</td></tr>`).join('')}</tbody>
+    </table>`:'<div class="prose"><p>Detailed financials not publicly disclosed.</p></div>'}`;
+
+  /* Market sizing */
+  const ms = d.marketSizing||{};
+  const msBody = ms.tam ? `
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px">
+      ${[['TAM · Total Addressable Market',ms.tam,'var(--bl)','var(--blb)'],['SAM · Serviceable Addressable Market',ms.sam,'var(--p)','var(--pg)'],['SOM · Serviceable Obtainable Market',ms.som,'var(--gr)','var(--grb)']].map(([l,v,c,bg])=>`
+        <div style="background:${bg};border-radius:var(--r);padding:16px;border:1px solid ${c}33">
+          <div style="font-size:9px;color:${c};text-transform:uppercase;letter-spacing:.07em;font-weight:600;margin-bottom:6px">${l.split('·')[0].trim()}</div>
+          <div style="font-size:10px;color:var(--t2);margin-bottom:8px">${l.split('·')[1]?.trim()}</div>
+          <div style="font-size:22px;font-weight:700;color:${c};font-family:var(--fm)">${v||'—'}</div>
+        </div>`).join('')}
+    </div>
+    ${ms.methodology?`<div style="font-size:13px;color:var(--t1);line-height:1.7;margin-bottom:8px">${ms.methodology}</div>`:''}
+    ${ms.growthRate?`<div style="font-size:12px;color:var(--t2)">Market CAGR: <span style="color:var(--gr);font-weight:600">${ms.growthRate}</span></div>`:''}
+  ` : '<div class="prose"><p>Market sizing data not available.</p></div>';
+
+  /* Fundraising */
+  const rds=d.rounds||[];
+  const fundBody=rds.length?`<table class="dt" style="margin-bottom:${d.roundsChart?'16':'0'}px">
+    <thead><tr><th>Date</th><th>Round</th><th>Amount</th><th>Post-money</th><th>Lead</th><th>Significance</th></tr></thead>
+    <tbody>${rds.map(r=>`<tr>
+      <td class="mn" style="font-size:12px;color:var(--t2)">${r.date||'—'}</td>
+      <td><span class="rb ${getRB(r.round)}">${r.round||'—'}</span></td>
+      <td class="td-p mn">${r.amount||'—'}</td>
+      <td class="mn" style="color:var(--t1)">${r.valuation||'—'}</td>
+      <td>${r.lead||'—'}</td>
+      <td style="font-size:12px;color:var(--t2)">${r.notable||'—'}</td>
+    </tr>`).join('')}</tbody>
+  </table>${d.roundsChart?`<div class="ch-wrap" style="height:${Math.max(160,rds.length*36)}px"><canvas id="ch-rds" role="img" aria-label="Funding rounds">Funding rounds</canvas></div>`:''}`:
+  '<div class="prose"><p>No public fundraising data available.</p></div>';
+
+  /* Investors */
+  const invs=d.investors||[];
+  const invBody=invs.length?`<div class="inv-grid">${invs.map(i=>`<div class="inv">
+    <div class="inv-n">${i.name}</div>
+    <div class="inv-m">${[i.type,i.country].filter(Boolean).join(' · ')}</div>
+    ${i.rounds?`<div class="inv-m" style="margin-top:3px">Rounds: ${i.rounds}</div>`:''}
+    ${i.portfolioSignal?`<div style="font-size:12px;color:var(--t2);margin-top:5px;font-style:italic">${i.portfolioSignal}</div>`:''}
+    <div style="margin-top:6px">${i.isLead?'<span class="inv-l">Lead</span>':''}${i.isFirst?'<span class="inv-f">First check</span>':''}</div>
+  </div>`).join('')}</div>`:'<div class="prose"><p>No investor data available.</p></div>';
+
+  /* Cap table */
+  const sh=d.shareholders||[];
+  const capBody=sh.length?`<div class="two">
+    <table class="dt"><thead><tr><th>Stakeholder</th><th>Type</th><th>Stake</th></tr></thead>
+    <tbody>${sh.map(s=>`<tr><td class="td-p">${s.name}</td><td style="color:var(--t2)">${s.type||'—'}</td><td class="mn" style="color:var(--p3)">${s.stake||'—'}</td></tr>`).join('')}</tbody></table>
+    <div><div class="ch-wrap" style="height:220px"><canvas id="ch-cap" role="img" aria-label="Cap table">Shareholding</canvas></div></div>
+  </div>`:'<div class="prose"><p>Cap table not publicly disclosed.</p></div>';
+
+  /* Competitive */
+  const cps=d.competitors||[];
+  const peerComps=d.peerComps||[];
+  const compBody=`
+    ${d.competitiveContext?`<div class="prose" style="margin-bottom:16px"><p>${d.competitiveContext}</p></div>`:''}
+    ${peerComps.length?`<div style="margin-bottom:18px">
+      <div style="font-size:11px;color:var(--t2);text-transform:uppercase;letter-spacing:.07em;font-weight:500;margin-bottom:10px">Peer trading & transaction comps</div>
+      <table class="dt">
+        <thead><tr><th>Company</th><th>Status</th><th>EV/Revenue</th><th>EV/EBITDA</th><th>Rev Growth</th><th>Gross Margin</th><th>Valuation</th></tr></thead>
+        <tbody>${peerComps.map(p=>`<tr>
+          <td class="td-p">${p.name}</td>
+          <td><span style="font-size:11px;padding:2px 7px;border-radius:4px;background:${p.status==='Public'?'var(--grb)':p.status==='Acquired'?'var(--amb)':'var(--blb)'};color:${p.status==='Public'?'var(--gr)':p.status==='Acquired'?'var(--am)':'var(--bl)'}">${p.status||'—'}</span></td>
+          <td class="mn" style="color:var(--p3)">${p.evRevenue||'—'}</td>
+          <td class="mn" style="color:var(--t1)">${p.evEbitda||'—'}</td>
+          <td class="mn" style="color:var(--gr)">${p.revenueGrowth||'—'}</td>
+          <td class="mn">${p.grossMargin||'—'}</td>
+          <td class="mn">${p.lastValuation||'—'}</td>
+        </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>`:''}
+    <div class="comp-list">${cps.map(c=>`<div class="comp">
+      <div class="comp-av">${c.name.charAt(0)}</div>
+      <div style="flex:1;min-width:0">
+        <div class="comp-n">${c.name}</div>
+        ${c.desc?`<div class="comp-d">${c.desc}</div>`:''}
+        <div class="comp-tags">
+          ${c.stage?`<span class="comp-tag">${c.stage}</span>`:''}
+          ${c.raised?`<span class="comp-tag">${c.raised}</span>`:''}
+          ${c.country?`<span class="comp-tag">${c.country}</span>`:''}
+          ${c.differentiator?`<span class="comp-diff">${c.differentiator}</span>`:''}
+        </div>
+      </div>
+    </div>`).join('')}</div>`;
+
+  /* Exit scenarios */
+  const exits = d.exitScenarios||[];
+  const exitBody = exits.length ? `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">${exits.map((e,i)=>{
+    const cols=[['var(--bl)','var(--blb)'],['var(--p)','var(--pg)'],['var(--gr)','var(--grb)']];
+    const [c,bg]=cols[i%3];
+    return `<div style="background:${bg};border-radius:var(--rl);padding:18px;border:1px solid ${c}33">
+      <div style="font-size:10px;color:${c};text-transform:uppercase;letter-spacing:.07em;font-weight:600;margin-bottom:10px">${e.type||''}</div>
+      <div style="font-size:22px;font-weight:700;color:${c};font-family:var(--fm);margin-bottom:4px">${e.impliedMultiple||'—'}</div>
+      <div style="font-size:11px;color:var(--t2);margin-bottom:10px">${e.timeline||''}</div>
+      ${e.targetBuyers?`<div style="font-size:12px;color:var(--t1);margin-bottom:8px"><span style="color:var(--t2)">Buyers: </span>${e.targetBuyers}</div>`:''}
+      ${e.rationale?`<div style="font-size:12px;color:var(--t1);line-height:1.6">${e.rationale}</div>`:''}
+    </div>`;
+  }).join('')}</div>` : '<div class="prose"><p>Exit scenario analysis not available.</p></div>';
+
+  /* Risks */
+  const rks=d.risks||[];
+  const da=d.diligenceAreas||[];
+  const riskBody=`<div>${rks.map(r=>`<div class="risk">
+    <div class="risk-ico ${r.level==='h'?'rh-ico':r.level==='l'?'rl-ico':'rm-ico'}">${r.level==='h'?'🔴':r.level==='l'?'🟢':'🟡'}</div>
+    <div style="flex:1">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <div class="risk-t">${r.title}</div>
+        ${r.category?`<span style="font-size:10px;padding:1px 7px;border-radius:4px;background:var(--b1);color:var(--t2)">${r.category}</span>`:''}
+      </div>
+      <div class="risk-d">${r.desc}</div>
+      ${r.mitigation?`<div style="font-size:12px;color:var(--gr);margin-top:5px">↳ ${r.mitigation}</div>`:''}
+      <span class="risk-b ${r.level==='h'?'rb-h':r.level==='l'?'rb-l':'rb-m'}" style="margin-top:6px">${r.level==='h'?'High risk':r.level==='l'?'Low risk':'Medium risk'}</span>
+    </div>
+  </div>`).join('')}</div>
+  ${da.length?`<div style="margin-top:18px;padding-top:18px;border-top:1px solid var(--b0)">
+    <div style="font-size:11px;color:var(--t2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;font-weight:500">Key diligence workstreams</div>
+    <div class="dl">${da.map(a=>`<div class="dlr">
+      <span class="dlk" style="display:flex;align-items:center;gap:6px">
+        ${a.priority==='high'?`<span style="width:7px;height:7px;border-radius:50%;background:var(--rd);flex-shrink:0;display:inline-block"></span>`:`<span style="width:7px;height:7px;border-radius:50%;background:var(--am);flex-shrink:0;display:inline-block"></span>`}
+        <span style="color:var(--t1);font-weight:500">${a.area}</span>
+      </span>
+      <span class="dlv" style="color:var(--t2);font-weight:400;font-size:13px">${a.detail}</span>
+    </div>`).join('')}</div>
+  </div>`:''}`;
+
+  const rEl=document.getElementById('report');
+  rEl.style.display='block';
+  rEl.innerHTML = header+acts+aiSum
+    +sec('◈','Investment thesis',thesisBody,'th')
+    +sec('🏢','Business overview',ovBody,'ov')
+    +sec('📦','Products & business model',prBody,'pr')
+    +sec('👤','Management team',mgmtBody,'mgmt',mgmt.length||'')
+    +sec('📊','Financials & key ratios',finBody,'fn')
+    +sec('🌐','Market sizing',msBody,'ms')
+    +sec('💰','Fundraising & valuations',fundBody,'fd',rds.length||'')
+    +sec('👥','Investors',invBody,'inv',invs.length||'')
+    +sec('◕','Cap table & shareholding',capBody,'cap')
+    +sec('⊞','Competitive landscape & peer comps',compBody,'comp',cps.length||'')
+    +sec('🚪','Exit scenarios',exitBody,'exit')
+    +sec('⚠','Risks & diligence areas',riskBody,'risk',rks.length||'');
+
+  ['sc-th','sc-ov','sc-pr','sc-fn','sc-fd','sc-inv'].forEach(id=>document.getElementById(id)?.classList.add('open'));
+
+  renderCharts(d);
+  rEl.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function renderCharts(d){
+  const base={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+    scales:{x:{grid:{color:'rgba(255,255,255,0.03)'},ticks:{color:'#55556a',font:{size:10}}},
+            y:{grid:{color:'rgba(255,255,255,0.03)'},ticks:{color:'#55556a',font:{size:10}}}}};
+
+  const fin=d.financials||[];
+  if(fin.length && document.getElementById('ch-rev'))
+    new Chart(document.getElementById('ch-rev'),{type:'bar',
+      data:{labels:fin.map(f=>f.year),datasets:[{data:fin.map(f=>Math.round(f.revenue||0)),backgroundColor:'rgba(124,110,247,0.45)',borderColor:'#7c6ef7',borderWidth:2,borderRadius:5}]},
+      options:base});
+
+  if(fin.length && document.getElementById('ch-emp'))
+    new Chart(document.getElementById('ch-emp'),{type:'line',
+      data:{labels:fin.map(f=>f.year),datasets:[{data:fin.map(f=>Math.round(f.employees||0)),borderColor:'#3dd68c',backgroundColor:'rgba(61,214,140,0.08)',borderWidth:2,tension:.4,fill:true,pointBackgroundColor:'#3dd68c',pointRadius:4}]},
+      options:base});
+
+  if(d.roundsChart && document.getElementById('ch-rds')){
+    const rc=d.roundsChart;
+    const h=Math.max(160,(rc.labels||[]).length*36);
+    new Chart(document.getElementById('ch-rds'),{type:'bar',
+      data:{labels:rc.labels,datasets:[{data:rc.values.map(v=>Math.round(v)),backgroundColor:rc.colors||'rgba(91,156,246,0.45)',borderColor:'#5b9cf6',borderWidth:2,borderRadius:5}]},
+      options:{...base,indexAxis:'y',scales:{x:{...base.scales.x},y:{...base.scales.y,ticks:{color:'#9090a8',font:{size:11}}}}}});
+  }
+
+  if((d.shareholders||[]).length && document.getElementById('ch-cap')){
+    const clrs=['#7c6ef7','#5b9cf6','#3dd68c','#f0a445','#ef5f5f','#a89af9','#2fd4c8','#f472b6'];
+    new Chart(document.getElementById('ch-cap'),{type:'doughnut',
+      data:{labels:d.shareholders.map(s=>s.name),
+        datasets:[{data:d.shareholders.map(s=>parseFloat((s.stake||'0').replace('%',''))||1),
+          backgroundColor:clrs.slice(0,d.shareholders.length),borderColor:'#14141e',borderWidth:3}]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:true,position:'bottom',labels:{color:'#9090a8',font:{size:11},padding:12,boxWidth:9,boxHeight:9}}}}});
+  }
+}
+
+function exportMemo(){
+  if(!window.__rptData){ alert('No report loaded.'); return; }
+  const d = window.__rptData;
+  const co = d.company||{};
+  const nm = co.name||'Company';
+  const init = nm.split(' ').map(w=>w[0]||'').join('').slice(0,2).toUpperCase();
+  const today = new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'});
+
+  /* Capture chart canvases as base64 before opening window */
+  function chartImg(id,h=160){
+    const c=document.getElementById(id);
+    if(!c) return '';
+    return `<img src="${c.toDataURL('image/png')}" style="width:100%;height:${h}px;object-fit:contain;display:block"/>`;
+  }
+
+  function getRBLabel(r){
+    if(!r) return r;
+    const s=r.toLowerCase();
+    if(s.includes('pre-seed')||s.includes('angel')) return '#e8f8f0';
+    if(s.includes('seed')) return '#e8f8f0';
+    if(/series a/.test(s)) return '#e8f1fc';
+    if(/series b/.test(s)) return '#eeecfd';
+    if(/series c/.test(s)) return '#fff8ee';
+    if(/series [d-z]/.test(s)||s.includes('late')) return '#fdf0f0';
+    if(s.includes('ipo')) return '#e8f7f6';
+    return '#f4f4f6';
+  }
+  function getRBColor(r){
+    if(!r) return '#555';
+    const s=r.toLowerCase();
+    if(s.includes('seed')||s.includes('angel')) return '#1a7a4a';
+    if(/series a/.test(s)) return '#1a50a0';
+    if(/series b/.test(s)) return '#5040b0';
+    if(/series c/.test(s)) return '#a05800';
+    if(/series [d-z]/.test(s)||s.includes('late')) return '#b03030';
+    if(s.includes('ipo')) return '#0a7070';
+    return '#444';
+  }
+
+  const riskColor={h:{bg:'#fdf0f0',border:'#e8b4b4',text:'#9b2020',label:'High Risk'},
+                   m:{bg:'#fff8ee',border:'#f0d090',text:'#8a5200',label:'Medium Risk'},
+                   l:{bg:'#edf7f1',border:'#9dd4b4',text:'#1a6a36',label:'Low Risk'}};
+
+  const rounds=d.rounds||[];
+  const investors=d.investors||[];
+  const shareholders=d.shareholders||[];
+  const competitors=d.competitors||[];
+  const peerComps=d.peerComps||[];
+  const risks=d.risks||[];
+  const diligence=d.diligenceAreas||[];
+  const fin=d.financials||[];
+  const ratios=d.keyRatios||[];
+  const mgmt=d.managementTeam||[];
+  const it=d.investmentThesis||{};
+  const ue=d.unitEconomics||{};
+  const ms=d.marketSizing||{};
+  const exits=d.exitScenarios||[];
+
+  const revImg=chartImg('ch-rev',150);
+  const empImg=chartImg('ch-emp',150);
+  const rdsImg=chartImg('ch-rds',Math.max(140,rounds.length*32));
+  const capImg=chartImg('ch-cap',200);
+
+  const ueFields=[['LTV',ue.ltv],['CAC',ue.cac],['LTV/CAC',ue.ltvCacRatio],['Payback',ue.paybackMonths],['NRR',ue.nrr],['Gross Margin',ue.grossMargin],['Burn Multiple',ue.burnMultiple],['ARPU',ue.arpu]].filter(x=>x[1]&&x[1]!=='N/A'&&x[1]!=='null');
+  const exitColors=[{bg:'#eef4fd',border:'#b0cef0',text:'#1a4a90'},{bg:'#eceeff',border:'#c8ccf4',text:'#2d34a0'},{bg:'#edf7f2',border:'#9dd4b8',text:'#0f6e3a'}];
+
+  const html=`<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>${nm} — PE Research Memo · Praevix</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0d0f14;--ink2:#3a3d4a;--ink3:#6b6f80;--ink4:#9a9daa;
+  --bg:#ffffff;--bg2:#f7f8fa;--bg3:#f0f2f6;--bg4:#e8eaf0;
+  --accent:#1a1f6e;--accent2:#2d34a0;--accent3:#4a52c8;--accentlt:#eceeff;
+  --green:#0f6e3a;--greenbg:#edf7f2;--greenborder:#9dd4b8;
+  --amber:#7a4800;--amberbg:#fff8ee;--amberborder:#f0d090;
+  --red:#8c1a1a;--redbg:#fdf0f0;--redborder:#e8b4b4;
+  --blue:#1a4a90;--bluebg:#eef4fd;--blueborder:#b0cef0;
+  --f:'Inter',system-ui,sans-serif;--fm:'IBM Plex Mono',monospace;
+}
+body{font-family:var(--f);background:var(--bg);color:var(--ink);font-size:10pt;line-height:1.6;-webkit-font-smoothing:antialiased}
+
+/* PAGE & PRINT */
+@page{size:A4 portrait;margin:15mm 14mm 18mm 14mm}
+@page:first{margin-top:0;margin-bottom:0}
+*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}
+@media print{
+  .no-print{display:none!important}
+  .page-break{break-before:page!important;page-break-before:always!important}
+  body{font-size:9pt;-webkit-font-smoothing:antialiased}
+  .cover{min-height:0!important;break-after:page!important;page-break-after:always!important}
+  .section{break-inside:avoid;page-break-inside:avoid;padding:20px 28px}
+  table{break-inside:auto}
+  tr{break-inside:avoid;page-break-inside:avoid}
+  thead{display:table-header-group}
+  .prose p{orphans:3;widows:3}
+  .callout,.kv-grid,.inv-grid,.comp-grid,.dil-grid{break-inside:avoid;page-break-inside:avoid}
+  .cover-band,.doc-footer,table th{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  .print-header{display:flex!important}
+}
+/* running header on every printed page (screen: hidden) */
+.print-header{display:none;position:fixed;top:0;left:0;right:0;height:8mm;background:var(--accent);align-items:center;justify-content:space-between;padding:0 14mm;z-index:9999;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.print-header span{font-size:7.5pt;color:rgba(255,255,255,.75);font-family:var(--fm);letter-spacing:.06em}
+.print-header strong{color:#fff;font-size:7.5pt;font-family:var(--fm)}
+
+/* PRINT BUTTON */
+.print-bar{background:var(--accent);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.print-bar span{color:rgba(255,255,255,.75);font-size:13px}
+.print-bar strong{color:#fff;font-size:14px}
+.print-btns{display:flex;gap:10px}
+.pbtn{padding:8px 20px;border-radius:6px;font-family:var(--f);font-size:13px;font-weight:500;cursor:pointer;border:none;transition:all .15s}
+.pbtn-wh{background:#fff;color:var(--accent)}
+.pbtn-wh:hover{background:#eceeff}
+.pbtn-ol{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.35)}
+.pbtn-ol:hover{background:rgba(255,255,255,.1)}
+
+/* COVER PAGE */
+.cover{background:var(--bg);padding:0;page-break-after:always;min-height:257mm;display:flex;flex-direction:column}
+.cover-band{background:var(--accent);height:10px;width:100%;flex-shrink:0}
+.cover-inner{padding:36px 44px 32px;display:flex;flex-direction:column;flex:1}
+.cover-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:48px}
+.cover-brand{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:var(--accent);letter-spacing:-.02em}
+.cover-brand svg{width:28px;height:28px}
+.cover-date{font-size:11px;color:var(--ink3);font-family:var(--fm)}
+.cover-av{width:80px;height:80px;border-radius:16px;background:linear-gradient(135deg,var(--accent),var(--accent3));display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:700;color:#fff;margin-bottom:20px;letter-spacing:-.02em}
+.cover-co{font-size:36px;font-weight:700;color:var(--ink);letter-spacing:-.04em;margin-bottom:10px;line-height:1}
+.cover-desc{font-size:13px;color:var(--ink2);max-width:520px;line-height:1.7;margin-bottom:28px}
+.cover-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:36px}
+.ctag{font-size:10.5px;padding:4px 12px;border-radius:5px;font-weight:500}
+.ctag-bl{background:var(--bluebg);color:var(--blue);border:1px solid var(--blueborder)}
+.ctag-gr{background:var(--greenbg);color:var(--green);border:1px solid var(--greenborder)}
+.ctag-gy{background:var(--bg3);color:var(--ink2);border:1px solid var(--bg4)}
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:40px;padding-bottom:32px;border-bottom:2px solid var(--bg4)}
+.kpi-box{background:var(--bg2);border-radius:8px;padding:14px 12px;border-top:2px solid var(--accent3)}
+.kpi-lbl{font-size:9px;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-weight:600}
+.kpi-val{font-size:17px;font-weight:700;color:var(--ink);font-family:var(--fm);letter-spacing:-.02em}
+.kpi-val.g{color:var(--green)}.kpi-val.a{color:var(--accent3)}.kpi-val.b{color:var(--blue)}
+.cover-sum{background:var(--accentlt);border-left:3px solid var(--accent3);padding:16px 18px;border-radius:0 8px 8px 0;margin-bottom:28px}
+.cover-sum-lbl{font-size:9.5px;color:var(--accent2);text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:7px}
+.cover-sum p{font-size:12px;color:var(--ink2);line-height:1.7}
+.cover-toc{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.toc-item{display:flex;align-items:center;gap:10px;font-size:11.5px;color:var(--ink2);padding:6px 0;border-bottom:1px solid var(--bg3)}
+.toc-n{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700;flex-shrink:0}
+.cover-footer{margin-top:auto;padding-top:28px;border-top:1px solid var(--bg4);display:flex;align-items:center;justify-content:space-between}
+.cover-foot-brand{font-size:11px;color:var(--ink3)}
+.cover-foot-disc{font-size:9.5px;color:var(--ink4);max-width:420px;line-height:1.5;text-align:right}
+
+/* SECTION STRUCTURE */
+.section{padding:28px 44px;border-bottom:1px solid var(--bg4);break-inside:avoid;page-break-inside:avoid;overflow:visible}
+.section:last-of-type{border-bottom:none}
+.sec-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--bg4);break-after:avoid;page-break-after:avoid}
+.sec-num{width:26px;height:26px;border-radius:6px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.sec-title{font-size:15px;font-weight:700;color:var(--ink);letter-spacing:-.02em}
+.sec-sub{font-size:10.5px;color:var(--ink3);margin-left:auto;font-family:var(--fm)}
+
+/* TYPOGRAPHY */
+.prose{font-size:11px;color:var(--ink2);line-height:1.8;margin-bottom:14px}
+.prose p{margin-bottom:10px}
+.prose p:last-child{margin-bottom:0}
+.prose strong{color:var(--ink);font-weight:600}
+.callout{background:var(--accentlt);border-left:3px solid var(--accent3);padding:12px 14px;border-radius:0 6px 6px 0;font-size:11px;color:var(--ink2);line-height:1.7;margin-bottom:16px}
+.callout strong{color:var(--accent2)}
+
+/* TABLES */
+table{width:100%;border-collapse:collapse;font-size:10.5px;margin-bottom:16px}
+table th{background:var(--accent);color:#fff;padding:7px 10px;text-align:left;font-size:9px;text-transform:uppercase;letter-spacing:.07em;font-weight:600}
+table th:first-child{border-radius:4px 0 0 4px}
+table th:last-child{border-radius:0 4px 4px 0}
+table td{padding:8px 10px;border-bottom:1px solid var(--bg3);color:var(--ink2);vertical-align:middle}
+table tr:last-child td{border-bottom:none}
+table tr:nth-child(even) td{background:var(--bg2)}
+table tr:hover td{background:var(--accentlt)}
+.td-p{color:var(--ink)!important;font-weight:600}
+.mn{font-family:var(--fm)!important;font-size:10px!important}
+.rb{display:inline-block;font-size:9.5px;padding:2px 8px;border-radius:4px;font-weight:600;font-family:var(--fm)}
+
+/* KV pairs */
+.kv-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:16px;border:1px solid var(--bg4);border-radius:7px;overflow:hidden}
+.kv{display:flex;align-items:baseline;justify-content:space-between;padding:8px 12px;border-bottom:1px solid var(--bg3);font-size:10.5px;gap:8px}
+.kv:last-child,.kv:nth-last-child(2):nth-child(odd){border-bottom:none}
+.kv-k{color:var(--ink3);flex-shrink:0}
+.kv-v{color:var(--ink);font-weight:500;text-align:right}
+
+/* CHARTS */
+.chart-2col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.chart-box{background:var(--bg2);border:1px solid var(--bg4);border-radius:7px;padding:12px}
+.chart-title{font-size:9px;color:var(--ink3);text-transform:uppercase;letter-spacing:.07em;font-weight:600;margin-bottom:8px}
+.chart-box img{border-radius:4px}
+
+/* INVESTORS */
+.inv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px}
+.inv-card{background:var(--bg2);border:1px solid var(--bg4);border-radius:7px;padding:10px 12px}
+.inv-name{font-size:11px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.inv-type{font-size:10px;color:var(--ink3)}
+.inv-badge{display:inline-block;font-size:9px;padding:2px 7px;border-radius:3px;margin-top:5px;font-weight:600}
+.inv-lead{background:var(--amberbg);color:var(--amber);border:1px solid var(--amberborder)}
+.inv-first{background:var(--bluebg);color:var(--blue);border:1px solid var(--blueborder)}
+
+/* RISKS */
+.risk-table{width:100%;border-collapse:collapse;font-size:10.5px}
+.risk-table th{background:var(--accent);color:#fff;padding:7px 10px;text-align:left;font-size:9px;text-transform:uppercase;letter-spacing:.07em}
+.risk-table td{padding:9px 10px;border-bottom:1px solid var(--bg3);vertical-align:top}
+.risk-table tr:last-child td{border-bottom:none}
+.risk-table tr:nth-child(even) td{background:var(--bg2)}
+.risk-pill{display:inline-block;font-size:9px;padding:3px 8px;border-radius:4px;font-weight:700;white-space:nowrap}
+
+/* COMPETITIVE */
+.comp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:8px}
+.comp-card{background:var(--bg2);border:1px solid var(--bg4);border-radius:7px;padding:10px 12px}
+.comp-name{font-size:11px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.comp-desc{font-size:10px;color:var(--ink3);margin-bottom:5px}
+.comp-pills{display:flex;flex-wrap:wrap;gap:4px}
+.comp-pill{font-size:9px;color:var(--ink3);background:var(--bg3);border:1px solid var(--bg4);padding:2px 6px;border-radius:3px}
+.comp-diff{font-size:9px;color:var(--accent2);background:var(--accentlt);border:1px solid #c8ccf4;padding:2px 6px;border-radius:3px}
+
+/* DILIGENCE */
+.dil-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.dil-item{background:var(--bg2);border:1px solid var(--bg4);border-radius:7px;padding:10px 12px;border-left:3px solid var(--accent3)}
+.dil-area{font-size:11px;font-weight:600;color:var(--ink);margin-bottom:4px}
+.dil-detail{font-size:10px;color:var(--ink3);line-height:1.5}
+
+/* SECTION DIVIDERS */
+.page-break{page-break-before:always!important;break-before:page!important}
+
+/* FOOTER STRIPE */
+.doc-footer{background:var(--accent);padding:11px 44px;display:flex;align-items:center;justify-content:space-between;margin-top:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.doc-footer span{font-size:9.5px;color:rgba(255,255,255,.65)}
+.doc-footer strong{color:rgba(255,255,255,.9);font-weight:500}
+</style>
+</head>
+<body>
+
+<div class="print-header">
+  <strong>${nm} — Confidential PE Research Memo</strong>
+  <span>Praevix Intelligence · Nishant Prabhakar · ${today}</span>
+</div>
+
+<!-- ══ COVER PAGE ══ -->
+<div class="cover">
+  <div class="cover-band"></div>
+  <div class="cover-inner">
+    <div class="cover-meta">
+      <div class="cover-brand">
+        <svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="6" fill="#1a1f6e"/><rect x="4" y="6.5" width="20" height="4" rx="2" fill="white" opacity="0.95"/><rect x="7" y="12.5" width="14" height="4" rx="2" fill="#a89af9"/><rect x="10" y="18.5" width="8" height="4" rx="2" fill="#3dd68c"/></svg>
+        Praevix Intelligence
+      </div>
+      <div class="cover-date">CONFIDENTIAL · ${today}</div>
+    </div>
+
+    <div class="cover-av">${init}</div>
+    <div class="cover-co">${nm}</div>
+    <div class="cover-desc">${co.description||''}</div>
+
+    <div class="cover-tags">
+      ${co.sector?`<span class="ctag ctag-bl">${co.sector}</span>`:''}
+      ${co.subsector?`<span class="ctag ctag-gy">${co.subsector}</span>`:''}
+      ${co.stage?`<span class="ctag ctag-gr">${co.stage}</span>`:''}
+      ${co.hq?`<span class="ctag ctag-gy">📍 ${co.hq}</span>`:''}
+      ${co.founded?`<span class="ctag ctag-gy">Est. ${co.founded}</span>`:''}
+      ${co.status?`<span class="ctag ctag-gy">${co.status}</span>`:''}
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-box"><div class="kpi-lbl">Total raised</div><div class="kpi-val g">${co.totalRaised||'—'}</div></div>
+      <div class="kpi-box"><div class="kpi-lbl">Latest valuation</div><div class="kpi-val a">${co.latestValuation||'—'}</div></div>
+      <div class="kpi-box"><div class="kpi-lbl">Revenue (LTM)</div><div class="kpi-val b">${co.revenue||'—'}</div></div>
+      <div class="kpi-box"><div class="kpi-lbl">Employees</div><div class="kpi-val">${co.employees||'—'}</div></div>
+      <div class="kpi-box"><div class="kpi-lbl">Founders</div><div class="kpi-val" style="font-size:11px;letter-spacing:0">${co.founders||'—'}</div></div>
+    </div>
+
+    ${d.aiSummary?`<div class="cover-sum">
+      <div class="cover-sum-lbl">Analyst Summary</div>
+      <p>${d.aiSummary}</p>
+    </div>`:''}
+
+    <div style="font-size:10px;color:var(--ink3);text-transform:uppercase;letter-spacing:.07em;font-weight:600;margin-bottom:10px">Contents</div>
+    <div class="cover-toc">
+      <div class="toc-item"><div class="toc-n">1</div>Investment thesis &amp; IC questions</div>
+      <div class="toc-item"><div class="toc-n">2</div>Business overview &amp; products</div>
+      <div class="toc-item"><div class="toc-n">3</div>Management team</div>
+      <div class="toc-item"><div class="toc-n">4</div>Financials, unit economics &amp; ratios</div>
+      <div class="toc-item"><div class="toc-n">5</div>Market sizing (TAM / SAM / SOM)</div>
+      <div class="toc-item"><div class="toc-n">6</div>Fundraising history &amp; valuations</div>
+      <div class="toc-item"><div class="toc-n">7</div>Investor base &amp; cap table</div>
+      <div class="toc-item"><div class="toc-n">8</div>Competitive landscape &amp; peer comps</div>
+      <div class="toc-item"><div class="toc-n">9</div>Exit scenarios</div>
+      <div class="toc-item"><div class="toc-n">10</div>Risks &amp; diligence workstreams</div>
+    </div>
+
+    <div class="cover-footer">
+      <div class="cover-foot-brand">Praevix PE Intelligence · Nishant Prabhakar · ${today}</div>
+      <div class="cover-foot-disc">This report is based on publicly available information and proprietary research. It is for informational purposes only and does not constitute investment advice. Verify all data independently.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SECTION 1: INVESTMENT THESIS ══ -->
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-num">1</div>
+    <div class="sec-title">Investment thesis &amp; IC questions</div>
+    <div class="sec-sub">Deal rationale</div>
+  </div>
+  ${it.summary?`<div class="callout" style="font-size:12px;line-height:1.75"><strong>Thesis:</strong> ${it.summary}</div>`:''}
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px">
+    ${it.bullCase?`<div style="background:#edf7f2;border:1px solid #9dd4b8;border-left:3px solid #0f6e3a;border-radius:0 7px 7px 0;padding:13px 14px">
+      <div style="font-size:8.5px;color:#0f6e3a;text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:7px">Bull case</div>
+      <div style="font-size:10.5px;color:#1a3a2a;line-height:1.7">${it.bullCase}</div>
+    </div>`:''}
+    ${it.bearCase?`<div style="background:#fdf0f0;border:1px solid #e8b4b4;border-left:3px solid #9b2020;border-radius:0 7px 7px 0;padding:13px 14px">
+      <div style="font-size:8.5px;color:#9b2020;text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:7px">Bear case</div>
+      <div style="font-size:10.5px;color:#3a1a1a;line-height:1.7">${it.bearCase}</div>
+    </div>`:''}
+  </div>
+  ${(it.keyQuestions||[]).length?`<div>
+    <div style="font-size:8.5px;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:10px">Investment committee diligence questions</div>
+    <table><thead><tr><th style="width:5%">#</th><th>Question</th></tr></thead>
+    <tbody>${it.keyQuestions.map((q,i)=>`<tr><td class="mn" style="color:var(--accent2);font-weight:700">${String(i+1).padStart(2,'0')}</td><td style="font-size:10.5px;line-height:1.6">${q}</td></tr>`).join('')}</tbody>
+    </table>
+  </div>`:''}
+</div>
+
+<!-- ══ SECTION 2: BUSINESS OVERVIEW ══ -->
+<div class="section page-break">
+  <div class="sec-header">
+    <div class="sec-num">2</div>
+    <div class="sec-title">Business overview &amp; products</div>
+    <div class="sec-sub">Qualitative analysis</div>
+  </div>
+  <div class="prose">${(d.overview||'').split(/\n\n+/).filter(Boolean).map(p=>`<p>${p.trim()}</p>`).join('')}</div>
+  ${d.businessDetails?`<div class="kv-grid">${Object.entries(d.businessDetails).map(([k,v])=>`<div class="kv"><span class="kv-k">${k}</span><span class="kv-v">${v}</span></div>`).join('')}</div>`:''}
+  ${d.products?`<div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--bg4)">
+    <div style="font-size:8.5px;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:10px">Products &amp; monetisation</div>
+    <div class="prose">${(d.products||'').split(/\n\n+/).filter(Boolean).map(p=>`<p>${p.trim()}</p>`).join('')}</div>
+  </div>`:''}
+</div>
+
+<!-- ══ SECTION 3: MANAGEMENT TEAM ══ -->
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-num">3</div>
+    <div class="sec-title">Management team</div>
+    <div class="sec-sub">${mgmt.length} executives</div>
+  </div>
+  ${mgmt.length?`<div class="inv-grid">${mgmt.map(m=>`<div class="inv-card">
+    <div style="display:flex;align-items:center;gap:9px;margin-bottom:7px">
+      <div style="width:30px;height:30px;border-radius:50%;background:var(--accentlt);border:1px solid #c8ccf4;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--accent2);flex-shrink:0">${(m.name||'?').charAt(0)}</div>
+      <div><div class="inv-name">${m.name}</div><div style="font-size:9.5px;color:var(--accent2);font-weight:500">${m.title||''}</div></div>
+    </div>
+    <div style="font-size:10px;color:var(--ink3);line-height:1.55">${m.background||''}</div>
+    ${m.tenureYears?`<div style="margin-top:5px;font-size:9.5px;color:var(--ink4)">${m.tenureYears}yr tenure</div>`:''}
+  </div>`).join('')}</div>`:'<p style="font-size:11px;color:var(--ink3);font-style:italic">Management team data not available.</p>'}
+</div>
+
+<!-- ══ SECTION 4: FINANCIALS ══ -->
+<div class="section page-break">
+  <div class="sec-header">
+    <div class="sec-num">4</div>
+    <div class="sec-title">Financial performance, unit economics &amp; key ratios</div>
+    <div class="sec-sub">Historical &amp; operating data</div>
+  </div>
+  ${d.financialHighlight?`<div class="callout"><strong>Headline:</strong> ${d.financialHighlight}</div>`:''}
+  ${(revImg||empImg)?`<div class="chart-2col">
+    ${revImg?`<div class="chart-box"><div class="chart-title">Revenue trend</div>${revImg}</div>`:''}
+    ${empImg?`<div class="chart-box"><div class="chart-title">Employee headcount</div>${empImg}</div>`:''}
+  </div>`:''}
+  ${fin.length?`<table>
+    <thead><tr><th>Year</th><th>Revenue</th><th>EBITDA</th><th>Employees</th><th>Notes</th></tr></thead>
+    <tbody>${fin.map(f=>`<tr>
+      <td class="td-p mn">${f.year}</td>
+      <td class="mn">${f.revenue!=null?f.revenue.toLocaleString():'—'}</td>
+      <td class="mn" style="color:${(f.ebitda||0)>=0?'var(--green)':'var(--red)'}">${f.ebitda!=null?f.ebitda.toLocaleString():'—'}</td>
+      <td class="mn">${f.employees!=null?f.employees.toLocaleString():'—'}</td>
+      <td style="font-size:9.5px;color:var(--ink4)">${f.note||'—'}</td>
+    </tr>`).join('')}</tbody>
+  </table>`:''}
+  ${ueFields.length?`<div style="margin:16px 0">
+    <div style="font-size:8.5px;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:10px">Unit economics</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">${ueFields.map(([k,v])=>`
+      <div style="background:var(--bg2);border:1px solid var(--bg4);border-top:2px solid var(--accent3);border-radius:7px;padding:10px 11px">
+        <div style="font-size:8px;color:var(--ink3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;font-weight:600">${k}</div>
+        <div style="font-size:14px;font-weight:700;color:var(--accent2);font-family:'IBM Plex Mono',monospace">${v}</div>
+      </div>`).join('')}
+    </div>
+  </div>`:''}
+  ${ratios.length?`<table>
+    <thead><tr><th>Metric</th><th>Value</th><th>Benchmark</th><th>Notes</th></tr></thead>
+    <tbody>${ratios.map(r=>`<tr><td class="td-p">${r.metric}</td><td class="mn" style="color:var(--accent2)">${r.value}</td><td style="font-size:9.5px;color:var(--ink4)">${r.benchmark||'—'}</td><td style="color:var(--ink3)">${r.note||'—'}</td></tr>`).join('')}</tbody>
+  </table>`:''}
+</div>
+
+<!-- ══ SECTION 5: MARKET SIZING ══ -->
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-num">5</div>
+    <div class="sec-title">Market sizing — TAM / SAM / SOM</div>
+    <div class="sec-sub">${ms.growthRate||'Market analysis'}</div>
+  </div>
+  ${ms.tam?`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px">
+    ${[['TAM','Total Addressable Market',ms.tam,'#1a4a90','#eef4fd','#b0cef0'],['SAM','Serviceable Addressable Market',ms.sam,'#2d34a0','#eceeff','#c8ccf4'],['SOM','Serviceable Obtainable Market',ms.som,'#0f6e3a','#edf7f2','#9dd4b8']].map(([short,long,val,tc,bg,bc])=>`
+    <div style="background:${bg};border:1px solid ${bc};border-radius:7px;padding:14px">
+      <div style="font-size:8.5px;color:${tc};text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:3px">${short}</div>
+      <div style="font-size:9.5px;color:var(--ink3);margin-bottom:10px">${long}</div>
+      <div style="font-size:20px;font-weight:700;color:${tc};font-family:'IBM Plex Mono',monospace">${val||'—'}</div>
+    </div>`).join('')}
+  </div>
+  ${ms.methodology?`<div class="callout"><strong>Methodology:</strong> ${ms.methodology}</div>`:''}
+  ${ms.growthRate?`<div style="font-size:11px;color:var(--ink2)">Market CAGR: <span style="font-weight:700;color:#0f6e3a">${ms.growthRate}</span></div>`:''}
+  `:'<p style="font-size:11px;color:var(--ink3);font-style:italic">Market sizing data not available.</p>'}
+</div>
+
+<!-- ══ SECTION 6: FUNDRAISING ══ -->
+<div class="section page-break">
+  <div class="sec-header">
+    <div class="sec-num">6</div>
+    <div class="sec-title">Fundraising history &amp; valuations</div>
+    <div class="sec-sub">${rounds.length} round${rounds.length!==1?'s':''} · Total ${co.totalRaised||'—'}</div>
+  </div>
+  ${rounds.length?`<table>
+    <thead><tr><th>Date</th><th>Round</th><th>Amount raised</th><th>Post-money</th><th>Lead investor(s)</th><th>Significance</th></tr></thead>
+    <tbody>${rounds.map(r=>`<tr>
+      <td class="mn" style="color:var(--ink3)">${r.date||'—'}</td>
+      <td><span class="rb" style="background:${getRBLabel(r.round)};color:${getRBColor(r.round)};border:1px solid ${getRBColor(r.round)}33">${r.round||'—'}</span></td>
+      <td class="td-p mn">${r.amount||'—'}</td>
+      <td class="mn">${r.valuation||'—'}</td>
+      <td>${r.lead||'—'}</td>
+      <td style="font-size:9.5px;color:var(--ink3);font-style:italic">${r.notable||'—'}</td>
+    </tr>`).join('')}</tbody>
+  </table>
+  ${rdsImg?`<div class="chart-box" style="margin-top:4px"><div class="chart-title">Funding by round</div>${rdsImg}</div>`:''}`
+  :'<p style="font-size:11px;color:var(--ink3);font-style:italic">No public fundraising data available.</p>'}
+</div>
+
+<!-- ══ SECTION 7: INVESTORS & CAP TABLE ══ -->
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-num">7</div>
+    <div class="sec-title">Investor base &amp; cap table</div>
+    <div class="sec-sub">${investors.length} investor${investors.length!==1?'s':''}</div>
+  </div>
+  ${investors.length?`<div class="inv-grid">${investors.map(i=>`<div class="inv-card">
+    <div class="inv-name">${i.name}</div>
+    <div class="inv-type">${[i.type,i.country].filter(Boolean).join(' · ')}</div>
+    ${i.rounds?`<div style="font-size:9.5px;color:var(--ink3);margin-top:2px">Rounds: ${i.rounds}</div>`:''}
+    ${i.portfolioSignal?`<div style="font-size:9.5px;color:var(--ink3);margin-top:4px;font-style:italic">${i.portfolioSignal}</div>`:''}
+    <div style="margin-top:5px">${i.isLead?'<span class="inv-badge inv-lead">Lead</span>':''}${i.isFirst?'<span class="inv-badge inv-first">First check</span>':''}</div>
+  </div>`).join('')}</div>`:''}
+  ${shareholders.length?`<div style="margin-top:18px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:start">
+    <div>
+      <div style="font-size:8.5px;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:10px">Estimated shareholding</div>
+      <table>
+        <thead><tr><th>Stakeholder</th><th>Type</th><th>Stake (%)</th></tr></thead>
+        <tbody>${shareholders.map(s=>`<tr><td class="td-p">${s.name}</td><td style="color:var(--ink3)">${s.type||'—'}</td><td class="mn" style="color:var(--accent2)">${s.stake||'—'}</td></tr>`).join('')}</tbody>
+      </table>
+    </div>
+    ${capImg?`<div class="chart-box" style="width:190px;flex-shrink:0"><div class="chart-title">Ownership split</div>${capImg}</div>`:''}
+  </div>`:''}
+</div>
+
+<!-- ══ SECTION 8: COMPETITIVE ══ -->
+<div class="section page-break">
+  <div class="sec-header">
+    <div class="sec-num">8</div>
+    <div class="sec-title">Competitive landscape &amp; peer comps</div>
+    <div class="sec-sub">${competitors.length} peers · ${peerComps.length} trading comps</div>
+  </div>
+  ${d.competitiveContext?`<div class="callout">${d.competitiveContext}</div>`:''}
+  ${peerComps.length?`<div style="margin-bottom:18px">
+    <div style="font-size:8.5px;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:10px">Peer trading &amp; transaction comps</div>
+    <table>
+      <thead><tr><th>Company</th><th>Status</th><th>EV/Revenue</th><th>EV/EBITDA</th><th>Rev Growth</th><th>Gross Margin</th><th>Valuation</th></tr></thead>
+      <tbody>${peerComps.map(p=>`<tr>
+        <td class="td-p">${p.name}</td>
+        <td><span class="rb" style="background:${p.status==='Public'?'#edf7f2':p.status==='Acquired'?'#fff8ee':'#eef4fd'};color:${p.status==='Public'?'#0f6e3a':p.status==='Acquired'?'#7a4800':'#1a4a90'};border:1px solid ${p.status==='Public'?'#9dd4b8':p.status==='Acquired'?'#f0d090':'#b0cef0'}">${p.status||'—'}</span></td>
+        <td class="mn" style="color:var(--accent2)">${p.evRevenue||'—'}</td>
+        <td class="mn">${p.evEbitda||'—'}</td>
+        <td class="mn" style="color:var(--green)">${p.revenueGrowth||'—'}</td>
+        <td class="mn">${p.grossMargin||'—'}</td>
+        <td class="mn">${p.lastValuation||'—'}</td>
+      </tr>`).join('')}</tbody>
+    </table>
+  </div>`:''}
+  ${competitors.length?`<div class="comp-grid">${competitors.map(c=>`<div class="comp-card">
+    <div class="comp-name">${c.name}</div>
+    ${c.desc?`<div class="comp-desc">${c.desc}</div>`:''}
+    <div class="comp-pills">
+      ${c.stage?`<span class="comp-pill">${c.stage}</span>`:''}
+      ${c.raised?`<span class="comp-pill">${c.raised}</span>`:''}
+      ${c.country?`<span class="comp-pill">${c.country}</span>`:''}
+      ${c.differentiator?`<span class="comp-diff">${c.differentiator}</span>`:''}
+    </div>
+  </div>`).join('')}</div>`:''}
+</div>
+
+<!-- ══ SECTION 9: EXIT SCENARIOS ══ -->
+<div class="section page-break">
+  <div class="sec-header">
+    <div class="sec-num">9</div>
+    <div class="sec-title">Exit scenarios &amp; return analysis</div>
+    <div class="sec-sub">${exits.length} scenarios modelled</div>
+  </div>
+  ${exits.length?`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;break-inside:avoid;page-break-inside:avoid">${exits.map((e,i)=>{
+    const ec=exitColors[i%exitColors.length];
+    return `<div style="background:${ec.bg};border:1px solid ${ec.border};border-radius:7px;padding:16px">
+      <div style="font-size:8.5px;color:${ec.text};text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:6px">${e.type||''}</div>
+      <div style="font-size:20px;font-weight:700;color:${ec.text};font-family:'IBM Plex Mono',monospace;margin-bottom:4px">${e.impliedMultiple||'—'}</div>
+      <div style="font-size:9.5px;color:var(--ink3);margin-bottom:10px">${e.timeline||''}</div>
+      ${e.targetBuyers?`<div style="font-size:10px;color:var(--ink2);margin-bottom:7px"><span style="font-weight:600">Buyers: </span>${e.targetBuyers}</div>`:''}
+      ${e.rationale?`<div style="font-size:10px;color:var(--ink2);line-height:1.6">${e.rationale}</div>`:''}
+    </div>`;
+  }).join('')}</div>`:'<p style="font-size:11px;color:var(--ink3);font-style:italic">Exit scenario analysis not available.</p>'}
+</div>
+
+<!-- ══ SECTION 10: RISKS & DILIGENCE ══ -->
+<div class="section page-break">
+  <div class="sec-header">
+    <div class="sec-num">10</div>
+    <div class="sec-title">Risks &amp; diligence workstreams</div>
+    <div class="sec-sub">${risks.length} risk factors · ${diligence.filter(a=>a.priority==='high').length} high-priority workstreams</div>
+  </div>
+  ${risks.length?`<table class="risk-table">
+    <thead><tr><th style="width:20%">Risk factor</th><th style="width:10%">Category</th><th style="width:38%">Description</th><th style="width:10%">Severity</th><th style="width:22%">Mitigation</th></tr></thead>
+    <tbody>${risks.map(r=>{
+      const rc=riskColor[r.level]||riskColor.m;
+      return `<tr>
+        <td class="td-p">${r.title}</td>
+        <td style="font-size:9.5px;color:var(--ink3)">${r.category||'—'}</td>
+        <td style="font-size:10px;line-height:1.5">${r.desc}</td>
+        <td><span class="risk-pill" style="background:${rc.bg};color:${rc.text};border:1px solid ${rc.border}">${rc.label}</span></td>
+        <td style="font-size:9.5px;color:var(--green);line-height:1.45">${r.mitigation||'—'}</td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table>`:''}
+  ${diligence.length?`<div style="margin-top:20px">
+    <div style="font-size:8.5px;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:12px">Key diligence workstreams</div>
+    <div class="dil-grid">${diligence.map(a=>`<div class="dil-item" style="border-left-color:${a.priority==='high'?'#9b2020':'#2d34a0'}">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+        <span style="width:6px;height:6px;border-radius:50%;background:${a.priority==='high'?'#9b2020':'#2d34a0'};flex-shrink:0;display:inline-block"></span>
+        <div class="dil-area">${a.area}</div>
+        <span style="font-size:8px;padding:1px 6px;border-radius:3px;font-weight:600;background:${a.priority==='high'?'#fdf0f0':'#eceeff'};color:${a.priority==='high'?'#9b2020':'#2d34a0'};border:1px solid ${a.priority==='high'?'#e8b4b4':'#c8ccf4'};margin-left:auto">${a.priority==='high'?'HIGH':'MED'}</span>
+      </div>
+      <div class="dil-detail">${a.detail}</div>
+    </div>`).join('')}</div>
+  </div>`:''}
+</div>
+
+<!-- Footer -->
+<div class="doc-footer">
+  <span>Praevix PE Intelligence · <strong>Nishant Prabhakar</strong></span>
+  <span>Generated ${today} · Confidential · © 2025–2026</span>
+  <span>Proprietary research — for informational purposes only</span>
+</div>`;
+
+  /* Load the full self-contained document into an isolated iframe — CSS vars
+     resolve inside the iframe's own :root (light theme), not the dark app's. */
+  const frame = document.getElementById('memo-frame');
+  frame.srcdoc = html;
+
+  const overlay = document.getElementById('memo-overlay');
+  overlay.classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMemo(){
+  const overlay = document.getElementById('memo-overlay');
+  overlay.classList.remove('show');
+  document.getElementById('memo-frame').srcdoc = '';
+  document.body.style.overflow = '';
+}
+
+function cpJSON(){
+  if(!window.__rptData) return;
+  navigator.clipboard.writeText(JSON.stringify(window.__rptData,null,2)).then(()=>{
+    const b=document.querySelectorAll('.act')[1];
+    if(!b) return;
+    const o=b.textContent; b.textContent='✓ Copied';
+    setTimeout(()=>b.textContent=o,1800);
+  });
+}
+
+/* ── AUTH ── */
+const _ADMIN = { username:'admin', email:'nishant.s.prabhakar@gmail.com', ph: btoa('admin@123') };
+
+function _getUsers(){
+  const extra = JSON.parse(localStorage.getItem('clarix_users')||'[]');
+  const adminPh = localStorage.getItem('clarix_admin_ph') || _ADMIN.ph;
+  return [{ ..._ADMIN, ph: adminPh }, ...extra.filter(u=>u.username!=='admin')];
+}
+
+function _getSession(){ try{ return JSON.parse(localStorage.getItem('clarix_session')||'null'); }catch(_){ return null; } }
+function _setSession(u){ localStorage.setItem('clarix_session', JSON.stringify({ username:u.username, email:u.email, loginTime:new Date().toISOString() })); }
+
+function showView(id){
+  document.querySelectorAll('.login-view').forEach(v=>v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  // clear errors
+  ['login-err','forgot-err','reset-err'].forEach(e=>{ const el=document.getElementById(e); if(el){ el.style.display='none'; el.textContent=''; } });
+}
+
+function doLogin(){
+  const ue = document.getElementById('login-user').value.trim();
+  const pw = document.getElementById('login-pass').value;
+  const users = _getUsers();
+  const user = users.find(u=>(u.username===ue||u.email===ue) && u.ph===btoa(pw));
+  if(user){
+    _setSession(user);
+    _enterApp();
+  } else {
+    const el = document.getElementById('login-err');
+    el.textContent = 'Incorrect username or password. Please try again.';
+    el.style.display = 'block';
+  }
+}
+
+function doLogout(){
+  if(!confirm('Sign out of Praevix?')) return;
+  localStorage.removeItem('clarix_session');
+  _showLoginScreen();
+}
+
+function doSendReset(){
+  const email = document.getElementById('reset-email').value.trim();
+  const users = _getUsers();
+  const user = users.find(u=>u.email===email);
+  const errEl = document.getElementById('forgot-err');
+  if(!user){
+    errEl.textContent = 'No account found with this email address.';
+    errEl.style.display = 'block';
+    return;
+  }
+  sessionStorage.setItem('clarix_reset_email', email);
+  showView('lv-reset');
+}
+
+function doResetPassword(){
+  const email = sessionStorage.getItem('clarix_reset_email');
+  if(!email){ showView('lv-login'); return; }
+  const np = document.getElementById('reset-new-pass').value;
+  const cp = document.getElementById('reset-confirm-pass').value;
+  const errEl = document.getElementById('reset-err');
+  if(!np || np.length < 6){
+    errEl.textContent = 'Password must be at least 6 characters.';
+    errEl.style.display = 'block';
+    return;
+  }
+  if(np !== cp){
+    errEl.textContent = 'Passwords do not match.';
+    errEl.style.display = 'block';
+    return;
+  }
+  const ph = btoa(np);
+  if(email === _ADMIN.email){
+    localStorage.setItem('clarix_admin_ph', ph);
+  } else {
+    const extra = JSON.parse(localStorage.getItem('clarix_users')||'[]');
+    const idx = extra.findIndex(u=>u.email===email);
+    if(idx !== -1) extra[idx].ph = ph;
+    localStorage.setItem('clarix_users', JSON.stringify(extra));
+  }
+  sessionStorage.removeItem('clarix_reset_email');
+  document.getElementById('reset-new-pass').value='';
+  document.getElementById('reset-confirm-pass').value='';
+  showView('lv-login');
+  const s = document.getElementById('login-success');
+  s.textContent = '✓ Password updated successfully. Please sign in.';
+  s.style.display = 'block';
+}
+
+function _enterApp(){
+  document.getElementById('login-screen').style.display = 'none';
+  const s = _getSession();
+  if(s){
+    const chip = document.getElementById('nav-user-chip');
+    chip.style.display = 'flex';
+    document.getElementById('nav-user-name').textContent = s.username;
+    document.getElementById('nav-user-av').textContent = s.username[0].toUpperCase();
+  }
+  checkKey();
+  if(!localStorage.getItem('clarix_licence_v1')){
+    document.getElementById('licence-modal').style.display = 'flex';
+  }
+}
+
+function _showLoginScreen(){
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('nav-user-chip').style.display = 'none';
+  document.getElementById('login-user').value='';
+  document.getElementById('login-pass').value='';
+  showView('lv-login');
+}
+
+// keyboard enter on login fields
+document.getElementById('login-pass').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
+document.getElementById('login-user').addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('login-pass').focus(); });
+
+/* ── INIT ── */
+checkKey();
+if(_getSession()){
+  _enterApp();
+} else {
+  document.getElementById('login-screen').style.display = 'flex';
+}
+</script>
+</body>
+</html>
