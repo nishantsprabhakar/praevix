@@ -648,7 +648,7 @@ const PROVIDERS = {
     noKey: true,
     hint:'<strong style="color:#3dd68c">✓ No API key needed.</strong> Pollinations.ai provides free AI inference. Just select a model and start researching.',
     auth: ()=>({}),
-    body:(msgs,model)=>JSON.stringify({model,messages:msgs,max_tokens:4096,temperature:0.3,response_format:{type:'json_object'}}),
+    body:(msgs,model)=>JSON.stringify({model,messages:msgs,max_tokens:4096,temperature:0.3}),
     parse: d => d.choices?.[0]?.message?.content || ''
   },
   groq:{
