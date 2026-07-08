@@ -440,10 +440,23 @@ footer{border-top:1px solid var(--b0);padding:20px 28px;display:flex;align-items
     <hr style="border:none;border-top:1px solid var(--b0);margin:20px 0"/>
     <div style="font-size:12px;font-weight:500;color:var(--t2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">Data Enrichment <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--gr);margin-left:6px">Optional</span></div>
     <div class="field">
-      <label>Tracxn API Key</label>
-      <input type="password" id="cfg-tracxn" placeholder="Paste your Tracxn API key…"/>
-      <div class="hint">When set, real funding rounds, investors &amp; company data from <a href="https://platform.tracxn.com" target="_blank">Tracxn</a> are injected into every report — replacing AI estimates with verified facts.</div>
+      <label>Data Provider</label>
+      <select id="cfg-data-prov" onchange="selDataProv(this.value)">
+        <option value="none">None — AI estimates only</option>
+        <optgroup label="India">
+          <option value="tracxn">Tracxn</option>
+          <option value="tofler">Tofler (MCA / ROC data)</option>
+          <option value="ventureintelligence">Venture Intelligence</option>
+        </optgroup>
+        <optgroup label="Global">
+          <option value="crunchbase">Crunchbase</option>
+          <option value="pitchbook">PitchBook</option>
+        </optgroup>
+        <option value="custom">Custom REST API</option>
+      </select>
+      <div class="hint">Choose a private market data API to inject verified company data into every report.</div>
     </div>
+    <div id="data-prov-fields"></div>
 
     <div class="modal-foot">
       <button class="btn-ghost" onclick="closeCfg()">Cancel</button>
@@ -465,7 +478,7 @@ footer{border-top:1px solid var(--b0);padding:20px 28px;display:flex;align-items
   </div>
   <div class="nav-r">
     <div class="nav-badge">PE Intelligence</div>
-    <div class="nav-live" id="tracxn-badge" style="display:none;background:rgba(61,214,140,0.08);border:1px solid rgba(61,214,140,0.25);border-radius:20px;padding:3px 10px;font-size:11px;color:#3dd68c;gap:5px"><span style="width:6px;height:6px;border-radius:50%;background:#3dd68c;box-shadow:0 0 6px #3dd68c;display:inline-block"></span>Tracxn</div>
+    <div class="nav-live" id="data-badge" style="display:none;background:rgba(61,214,140,0.08);border:1px solid rgba(61,214,140,0.25);border-radius:20px;padding:3px 10px;font-size:11px;color:#3dd68c;gap:5px"><span style="width:6px;height:6px;border-radius:50%;background:#3dd68c;box-shadow:0 0 6px #3dd68c;display:inline-block"></span><span id="data-badge-label">Data</span></div>
     <div class="nav-live"><span></span>AI Ready</div>
     <div class="nav-user-chip" id="nav-user-chip" onclick="doLogout()" title="Click to sign out">
       <div class="nav-user-av" id="nav-user-av"></div>
@@ -536,7 +549,7 @@ footer{border-top:1px solid var(--b0);padding:20px 28px;display:flex;align-items
     </div>
     <div class="steps">
       <div class="stp" id="s1"><div class="stp-dot"></div><span id="s1-txt">Identifying company profile &amp; sector</span></div>
-      <div class="stp" id="s2"><div class="stp-dot"></div>Fetching verified data from Tracxn</div>
+      <div class="stp" id="s2"><div class="stp-dot"></div><span id="s2-txt">Fetching verified data</span></div>
       <div class="stp" id="s3"><div class="stp-dot"></div>Analysing business model &amp; products</div>
       <div class="stp" id="s4"><div class="stp-dot"></div>Compiling fundraising history &amp; valuations</div>
       <div class="stp" id="s5"><div class="stp-dot"></div>Mapping investor base &amp; cap table</div>
@@ -722,9 +735,51 @@ function selProv(p){
   if(!cfg.noKey) document.getElementById('cfg-key').value = localStorage.getItem('cx_key_'+p)||'';
 }
 
+/* ── DATA PROVIDER CONFIG ── */
+const DATA_PROVIDER_DEFS = {
+  none:       { label:'None', noKey:true },
+  tracxn:     { label:'Tracxn',     keyLabel:'API Key', keyPlaceholder:'Paste your Tracxn API key…',
+                hint:'Injects verified funding rounds, investors & company data from <a href="https://platform.tracxn.com" target="_blank">Tracxn</a>.' },
+  tofler:     { label:'Tofler',     keyLabel:'API Key', keyPlaceholder:'Paste your Tofler API key…',
+                hint:'Injects MCA-verified financials, directors, filings & incorporation data for Indian companies from <a href="https://www.tofler.in/api" target="_blank">Tofler</a>. Best for India-focused diligence.' },
+  ventureintelligence: { label:'Venture Intelligence', keyLabel:'API Key', keyPlaceholder:'Paste your Venture Intelligence API key…',
+                hint:'Enriches reports with India PE/VC deal data, valuations & investor activity from <a href="https://www.ventureintelligence.com" target="_blank">Venture Intelligence</a>.' },
+  crunchbase: { label:'Crunchbase', keyLabel:'User Key', keyPlaceholder:'Paste your Crunchbase user key…',
+                hint:'Enriches reports with Crunchbase funding data & investors. Get a free key at <a href="https://data.crunchbase.com/docs/using-the-api" target="_blank">data.crunchbase.com</a>.' },
+  pitchbook:  { label:'PitchBook',  keyLabel:'API Key', keyPlaceholder:'Paste your PitchBook API key…',
+                hint:'Injects PitchBook-verified financials & deal data. Requires an active PitchBook subscription.' },
+  custom:     { label:'Custom REST API', keyLabel:'API Key / Bearer Token', keyPlaceholder:'API key or bearer token (optional)…',
+                hint:'Point Praevix at any JSON API. Use <code>{company}</code> in the URL as a placeholder for the company name.',
+                hasUrl:true, urlPlaceholder:'https://api.example.com/companies/{company}' }
+};
+
+let currentDataProv = localStorage.getItem('cx_data_prov') || 'none';
+
+function selDataProv(id){
+  currentDataProv = id;
+  const def = DATA_PROVIDER_DEFS[id] || DATA_PROVIDER_DEFS.none;
+  const wrap = document.getElementById('data-prov-fields');
+  if(id === 'none'){ wrap.innerHTML = ''; return; }
+  let html = '';
+  if(def.hasUrl){
+    const savedUrl = localStorage.getItem('cx_data_url_'+id)||'';
+    html += `<div class="field"><label>Endpoint URL</label><input type="text" id="cfg-data-url" placeholder="${def.urlPlaceholder||''}" value="${savedUrl}"/><div class="hint">Use <code>{company}</code> where the company name should be inserted. A GET request is made with the key as a Bearer token.</div></div>`;
+  }
+  if(!def.noKey){
+    const savedKey = localStorage.getItem('cx_data_key_'+id)||'';
+    html += `<div class="field"><label>${def.keyLabel||'API Key'}</label><input type="password" id="cfg-data-key" placeholder="${def.keyPlaceholder||''}"/><div class="hint">${def.hint||''}</div></div>`;
+    wrap.innerHTML = html;
+    if(savedKey) document.getElementById('cfg-data-key').value = savedKey;
+  } else {
+    wrap.innerHTML = html;
+  }
+}
+
 function openCfg(){
   selProv(currentProv);
-  document.getElementById('cfg-tracxn').value = localStorage.getItem('cx_tracxn_key')||'';
+  const dpSel = document.getElementById('cfg-data-prov');
+  if(dpSel) dpSel.value = currentDataProv;
+  selDataProv(currentDataProv);
   document.getElementById('cfg-overlay').classList.add('show');
 }
 function closeCfg(){ document.getElementById('cfg-overlay').classList.remove('show'); }
@@ -740,23 +795,38 @@ function saveCfg(){
   }
   localStorage.setItem('cx_prov', currentProv);
   localStorage.setItem('cx_model_'+currentProv, model);
-  const tracxnKey = document.getElementById('cfg-tracxn').value.trim();
-  if(tracxnKey) localStorage.setItem('cx_tracxn_key', tracxnKey);
-  else localStorage.removeItem('cx_tracxn_key');
+
+  // Save data provider selection
+  const dpId = document.getElementById('cfg-data-prov')?.value || 'none';
+  localStorage.setItem('cx_data_prov', dpId);
+  currentDataProv = dpId;
+  if(dpId !== 'none'){
+    const keyEl = document.getElementById('cfg-data-key');
+    if(keyEl){ const k=keyEl.value.trim(); if(k) localStorage.setItem('cx_data_key_'+dpId,k); else localStorage.removeItem('cx_data_key_'+dpId); }
+    const urlEl = document.getElementById('cfg-data-url');
+    if(urlEl){ const u=urlEl.value.trim(); if(u) localStorage.setItem('cx_data_url_'+dpId,u); else localStorage.removeItem('cx_data_url_'+dpId); }
+  }
   closeCfg();
   checkKey();
 }
 
 function getKey(){ return localStorage.getItem('cx_key_'+currentProv)||''; }
 function getModel(){ return localStorage.getItem('cx_model_'+currentProv) || PROVIDERS[currentProv].models[0].v; }
-
 function needsKey(){ return !PROVIDERS[currentProv].noKey; }
 
 function checkKey(){
   const w = document.getElementById('nokey-warn');
   w.style.display = (needsKey() && !getKey()) ? 'block' : 'none';
-  const tb = document.getElementById('tracxn-badge');
-  if(tb) tb.style.display = localStorage.getItem('cx_tracxn_key') ? 'flex' : 'none';
+  const db = document.getElementById('data-badge');
+  const dp = currentDataProv;
+  const hasDataKey = dp !== 'none' && (DATA_PROVIDER_DEFS[dp]?.noKey || localStorage.getItem('cx_data_key_'+dp));
+  const hasCustomUrl = dp === 'custom' && localStorage.getItem('cx_data_url_custom');
+  const active = hasDataKey || (dp === 'custom' && hasCustomUrl);
+  if(db){
+    db.style.display = active ? 'flex' : 'none';
+    const lbl = document.getElementById('data-badge-label');
+    if(lbl) lbl.textContent = DATA_PROVIDER_DEFS[dp]?.label || dp;
+  }
 }
 
 /* ── SEARCH ── */
@@ -779,10 +849,11 @@ function go(){
   document.getElementById('ld-co').textContent=name;
 
   STPS.forEach(id=>{ document.getElementById(id).className='stp'; });
-  // Update step 2 label based on whether Tracxn is configured
-  const s2txt = document.querySelector('#s2 .stp-dot').nextSibling;
-  if(s2txt) s2txt.textContent = localStorage.getItem('cx_tracxn_key')
-    ? 'Fetching verified data from Tracxn'
+  // Update step 2 label based on active data provider
+  const s2txt = document.getElementById('s2-txt');
+  const dpName = DATA_PROVIDER_DEFS[currentDataProv]?.label;
+  if(s2txt) s2txt.textContent = (currentDataProv !== 'none' && dpName)
+    ? 'Fetching verified data from ' + dpName
     : 'Analysing business model & products';
   stepTimers.forEach(clearTimeout); stepTimers=[];
   STPS.forEach((id,i)=>{
@@ -1184,86 +1255,235 @@ const PIAE = (function(){
   };
 })();
 
-/* ── TRACXN DATA ENRICHMENT ── */
-async function fetchTracxnData(company){
-  const key = localStorage.getItem('cx_tracxn_key');
-  if(!key) return null;
+/* ── DATA ENRICHMENT — generic dispatcher ── */
 
+async function fetchTracxnData(company, key){
   const BASE = 'https://platform.tracxn.com/api/2.2/playground';
   const headers = { 'Content-Type':'application/json', 'Authorization':'Bearer '+key };
-
+  const searchRes = await fetch(BASE+'/companies', {
+    method:'POST', headers,
+    body: JSON.stringify({
+      filter:{ name: company }, size: 3,
+      responseTemplate: ['id','name','shortDescription','stage','website','foundedYear',
+        'totalEquityFunding','latestFundingRound','investors','keyPeople',
+        'locations','primaryTaxonomy','tracxnScore']
+    })
+  });
+  if(!searchRes.ok) return null;
+  const searchData = await searchRes.json();
+  const hits = searchData?.data || searchData?.results || searchData?.companies || [];
+  if(!hits.length) return null;
+  const lc = company.toLowerCase();
+  const match = hits.find(h=>(h.name||'').toLowerCase()===lc) || hits[0];
+  if(!match) return null;
+  let rounds = [];
   try {
-    // Search companies by name
-    const searchRes = await fetch(BASE+'/companies', {
-      method:'POST',
-      headers,
-      body: JSON.stringify({
-        filter:{ name: company },
-        size: 3,
-        responseTemplate: ['id','name','shortDescription','stage','website','foundedYear',
-          'totalEquityFunding','latestFundingRound','investors','keyPeople',
-          'locations','primaryTaxonomy','tracxnScore']
-      })
-    });
-
-    if(!searchRes.ok) return null;
-    const searchData = await searchRes.json();
-    const hits = searchData?.data || searchData?.results || searchData?.companies || [];
-    if(!hits.length) return null;
-
-    // Pick best match (exact name match preferred, else first result)
-    const lc = company.toLowerCase();
-    const match = hits.find(h=>(h.name||'').toLowerCase()===lc) || hits[0];
-    if(!match) return null;
-
-    // Fetch funding rounds for this company
-    let rounds = [];
-    try {
-      const frRes = await fetch(BASE+'/companies/'+match.id+'/fundingrounds', { headers });
-      if(frRes.ok){
-        const frData = await frRes.json();
-        rounds = frData?.data || frData?.results || frData?.fundingRounds || [];
-      }
-    } catch(_){}
-
-    return { company: match, rounds };
-  } catch(_){
-    return null;
-  }
+    const frRes = await fetch(BASE+'/companies/'+match.id+'/fundingrounds', { headers });
+    if(frRes.ok){ const fd=await frRes.json(); rounds=fd?.data||fd?.results||fd?.fundingRounds||[]; }
+  } catch(_){}
+  return { provider:'Tracxn', company: match, rounds };
 }
 
-function formatTracxnForPrompt(td){
-  if(!td) return '';
-  const { company: c, rounds } = td;
-  const lines = ['=== VERIFIED DATA FROM TRACXN (use this data as ground truth) ==='];
-  if(c.name)              lines.push(`Company: ${c.name}`);
-  if(c.website)           lines.push(`Website: ${c.website}`);
-  if(c.foundedYear)       lines.push(`Founded: ${c.foundedYear}`);
-  if(c.stage)             lines.push(`Stage: ${c.stage}`);
-  if(c.shortDescription)  lines.push(`Description: ${c.shortDescription}`);
-  if(c.locations?.length) lines.push(`HQ: ${c.locations.map(l=>l.city||l.country||l).filter(Boolean).join(', ')}`);
-  if(c.primaryTaxonomy)   lines.push(`Sector: ${JSON.stringify(c.primaryTaxonomy)}`);
-  if(c.totalEquityFunding!=null) lines.push(`Total Equity Raised: ${c.totalEquityFunding}`);
-  if(c.tracxnScore!=null) lines.push(`Tracxn Score: ${c.tracxnScore}`);
+async function fetchToflerData(company, key){
+  const BASE = 'https://api.tofler.in/v1';
+  // Search by company name
+  const searchRes = await fetch(`${BASE}/company/search?company_name=${encodeURIComponent(company)}&api_key=${encodeURIComponent(key)}`);
+  if(!searchRes.ok) return null;
+  const searchData = await searchRes.json();
+  const hits = searchData?.data || searchData?.companies || searchData?.results || [];
+  if(!hits.length) return null;
+  const lc = company.toLowerCase();
+  const match = hits.find(h=>(h.company_name||h.name||'').toLowerCase().includes(lc)) || hits[0];
+  if(!match) return null;
 
-  if(c.investors?.length){
-    lines.push('Investors: '+c.investors.map(i=>i.name||i).filter(Boolean).join(', '));
+  // Fetch full company details using CIN
+  const cin = match.cin || match.CIN || match.id;
+  let details = match;
+  if(cin){
+    try {
+      const detRes = await fetch(`${BASE}/company/${encodeURIComponent(cin)}?api_key=${encodeURIComponent(key)}`);
+      if(detRes.ok){ const d=await detRes.json(); details = d?.data || d?.company || details; }
+    } catch(_){}
   }
-  if(c.keyPeople?.length){
-    lines.push('Key People: '+c.keyPeople.map(p=>`${p.name||''}${p.designation?' ('+p.designation+')':''}`).filter(Boolean).join('; '));
+
+  // Fetch directors
+  let directors = [];
+  if(cin){
+    try {
+      const dirRes = await fetch(`${BASE}/company/${encodeURIComponent(cin)}/directors?api_key=${encodeURIComponent(key)}`);
+      if(dirRes.ok){ const d=await dirRes.json(); directors = d?.data || d?.directors || []; }
+    } catch(_){}
   }
+
+  return { provider:'Tofler', company: details, directors, rounds:[] };
+}
+
+async function fetchVentureIntelligenceData(company, key){
+  const BASE = 'https://api.ventureintelligence.com/v1';
+  const headers = { 'Authorization':'Bearer '+key, 'Content-Type':'application/json' };
+
+  // Search companies
+  const searchRes = await fetch(`${BASE}/companies/search?q=${encodeURIComponent(company)}&limit=3`, { headers });
+  if(!searchRes.ok) return null;
+  const searchData = await searchRes.json();
+  const hits = searchData?.data || searchData?.companies || searchData?.results || [];
+  if(!hits.length) return null;
+  const lc = company.toLowerCase();
+  const match = hits.find(h=>(h.name||h.company_name||'').toLowerCase()===lc) || hits[0];
+  if(!match) return null;
+
+  const id = match.id || match.company_id;
+  let deals = [];
+  if(id){
+    try {
+      const dealRes = await fetch(`${BASE}/companies/${id}/deals`, { headers });
+      if(dealRes.ok){ const d=await dealRes.json(); deals = d?.data || d?.deals || []; }
+    } catch(_){}
+  }
+
+  return { provider:'Venture Intelligence', company: match, rounds: deals };
+}
+
+async function fetchCrunchbaseData(company, key){
+  const slug = company.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  const fields = 'short_description,founded_on,website_url,funding_total,last_funding_at,last_funding_type,num_funding_rounds,location_identifiers,category_groups,rank_org_company';
+  const res = await fetch(`https://api.crunchbase.com/api/v4/entities/organizations/${slug}?user_key=${encodeURIComponent(key)}&field_ids=${fields}`);
+  if(!res.ok) return null;
+  const d = await res.json();
+  const p = d?.properties;
+  if(!p) return null;
+  // Fetch funding rounds
+  let rounds = [];
+  try {
+    const fr = await fetch(`https://api.crunchbase.com/api/v4/entities/organizations/${slug}/funding_rounds?user_key=${encodeURIComponent(key)}&field_ids=announced_on,investment_type,money_raised,lead_investors,num_investors`);
+    if(fr.ok){ const fd=await fr.json(); rounds=(fd?.entities||[]).map(e=>e.properties).filter(Boolean); }
+  } catch(_){}
+  return { provider:'Crunchbase', company: p, rounds, slug };
+}
+
+async function fetchPitchBookData(company, key){
+  // PitchBook REST API — search companies
+  const headers = { 'Content-Type':'application/json', 'Authorization':'Bearer '+key };
+  const res = await fetch('https://api.pitchbook.com/companies?query='+encodeURIComponent(company)+'&limit=3', { headers });
+  if(!res.ok) return null;
+  const d = await res.json();
+  const hits = d?.results || d?.data || d?.companies || [];
+  if(!hits.length) return null;
+  const lc = company.toLowerCase();
+  const match = hits.find(h=>(h.name||h.companyName||'').toLowerCase()===lc) || hits[0];
+  return { provider:'PitchBook', company: match, rounds: match?.fundingRounds||[] };
+}
+
+async function fetchCustomData(company, key){
+  const urlTemplate = localStorage.getItem('cx_data_url_custom');
+  if(!urlTemplate) return null;
+  const url = urlTemplate.replace('{company}', encodeURIComponent(company));
+  const headers = key ? { 'Authorization':'Bearer '+key } : {};
+  const res = await fetch(url, { headers });
+  if(!res.ok) return null;
+  const d = await res.json();
+  return { provider:'Custom API', raw: d };
+}
+
+function formatEnrichmentForPrompt(result){
+  if(!result) return '';
+  const { provider } = result;
+  const lines = [`=== VERIFIED DATA FROM ${provider.toUpperCase()} (treat as ground truth — do not contradict) ===`];
+
+  if(result.raw){
+    // Custom API — inject raw JSON and let the model interpret it
+    lines.push('Raw API response (JSON):');
+    lines.push(JSON.stringify(result.raw, null, 2).slice(0, 4000));
+    lines.push(`=== END ${provider.toUpperCase()} DATA ===`);
+    return lines.join('\n');
+  }
+
+  const c = result.company || {};
+
+  // Normalise common field names across providers
+  const name = c.name || c.companyName || c.company_name || '';
+  const website = c.website || c.website_url || '';
+  const founded = c.foundedYear || c.founded_on?.value || c.date_of_incorporation || c.incorporation_date || '';
+  const stage = c.stage || c.last_funding_type || c.company_status || '';
+  const desc = c.shortDescription || c.short_description || c.description || c.about || '';
+  const totalRaised = c.totalEquityFunding || c.funding_total?.value_usd || '';
+  const score = c.tracxnScore != null ? `${provider} Score: ${c.tracxnScore}` : null;
+
+  // Tofler / MCA-specific fields
+  const cin = c.cin || c.CIN || '';
+  const paidUpCapital = c.paid_up_capital || c.paidUpCapital || '';
+  const authorisedCapital = c.authorised_capital || c.authorizedCapital || '';
+  const companyType = c.company_type || c.companyType || '';
+  const roc = c.roc || c.registrar_of_companies || '';
+  if(cin)               lines.push(`CIN: ${cin}`);
+  if(companyType)       lines.push(`Company Type: ${companyType}`);
+  if(roc)               lines.push(`ROC: ${roc}`);
+  if(paidUpCapital)     lines.push(`Paid-Up Capital: ${paidUpCapital}`);
+  if(authorisedCapital) lines.push(`Authorised Capital: ${authorisedCapital}`);
+
+  // Directors (Tofler)
+  const directors = result.directors || [];
+  if(directors.length){
+    lines.push('Directors: '+directors.map(d=>
+      `${d.name||d.director_name||''}${d.din?' (DIN: '+d.din+')':''}${d.designation?' — '+d.designation:''}`
+    ).filter(Boolean).join('; '));
+  }
+
+  if(name)        lines.push(`Company: ${name}`);
+  if(website)     lines.push(`Website: ${website}`);
+  if(founded)     lines.push(`Founded: ${founded}`);
+  if(stage)       lines.push(`Stage: ${stage}`);
+  if(desc)        lines.push(`Description: ${desc}`);
+  if(totalRaised) lines.push(`Total Equity Raised: ${totalRaised}`);
+  if(score)       lines.push(score);
+
+  // Locations
+  const locs = c.locations || c.location_identifiers || [];
+  if(locs.length) lines.push('HQ: '+locs.map(l=>l.city||l.value||l.country||l).filter(Boolean).join(', '));
+
+  // Sector / taxonomy
+  const sector = c.primaryTaxonomy || c.category_groups;
+  if(sector) lines.push(`Sector: ${JSON.stringify(sector)}`);
+
+  // Investors
+  const invs = c.investors || [];
+  if(invs.length) lines.push('Investors: '+invs.map(i=>i.name||i).filter(Boolean).join(', '));
+
+  // Key people
+  const people = c.keyPeople || [];
+  if(people.length) lines.push('Key People: '+people.map(p=>`${p.name||''}${p.designation?' ('+p.designation+')':''}`).filter(Boolean).join('; '));
+
+  // Funding rounds
+  const rounds = result.rounds || [];
   if(rounds.length){
     lines.push('Funding Rounds (verified):');
     rounds.forEach(r=>{
-      const amt = r.amount ? ` — ${r.amount}` : (r.isAmountUndisclosed ? ' — undisclosed' : '');
-      const invs = r.investors?.length ? ` | Investors: ${r.investors.map(i=>i.name||i).join(', ')}` : '';
-      lines.push(`  • ${r.name||r.date||'Round'}${r.date?' ('+r.date+')':''}${amt}${invs}`);
+      const date = r.date || r.announced_on?.value || '';
+      const amt = r.amount || r.money_raised?.value_usd || (r.isAmountUndisclosed ? 'undisclosed' : '');
+      const lead = (r.investors||r.lead_investors||[]).map(i=>i.name||i).filter(Boolean).join(', ');
+      lines.push(`  • ${r.name||r.investment_type||'Round'}${date?' ('+date+')':''}${amt?' — '+amt:''}${lead?' | '+lead:''}`);
     });
   } else if(c.latestFundingRound){
     lines.push(`Latest Round: ${JSON.stringify(c.latestFundingRound)}`);
   }
-  lines.push('=== END TRACXN DATA — fill all other fields with your best analysis ===');
+
+  lines.push(`=== END ${provider.toUpperCase()} DATA — fill all other fields with your best analysis ===`);
   return lines.join('\n');
+}
+
+async function fetchEnrichmentData(company){
+  const dp = currentDataProv;
+  if(dp === 'none') return null;
+  const key = localStorage.getItem('cx_data_key_'+dp) || '';
+  try {
+    if(dp === 'tracxn')              return await fetchTracxnData(company, key);
+    if(dp === 'tofler')              return await fetchToflerData(company, key);
+    if(dp === 'ventureintelligence') return await fetchVentureIntelligenceData(company, key);
+    if(dp === 'crunchbase')          return await fetchCrunchbaseData(company, key);
+    if(dp === 'pitchbook')           return await fetchPitchBookData(company, key);
+    if(dp === 'custom')              return await fetchCustomData(company, key);
+  } catch(_){}
+  return null;
 }
 
 async function fetchReport(company){
@@ -1271,12 +1491,12 @@ async function fetchReport(company){
   const key = getKey();
   const model = getModel();
 
-  // Fetch verified Tracxn data first (non-blocking — failure is graceful)
-  const tracxnData = await fetchTracxnData(company);
-  const tracxnBlock = formatTracxnForPrompt(tracxnData);
+  // Fetch verified enrichment data (non-blocking — failure is graceful)
+  const enrichData = await fetchEnrichmentData(company);
+  const enrichBlock = formatEnrichmentForPrompt(enrichData);
 
-  const userMsg = tracxnBlock
-    ? `Research company for PE diligence: ${company}\n\n${tracxnBlock}`
+  const userMsg = enrichBlock
+    ? `Research company for PE diligence: ${company}\n\n${enrichBlock}`
     : `Research company for PE diligence: ${company}`;
 
   const msgs = [
