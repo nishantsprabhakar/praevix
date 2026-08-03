@@ -333,7 +333,8 @@ footer{border-top:1px solid var(--b0);padding:20px 28px;display:flex;align-items
 .doc-zone{border:1.5px dashed var(--b1);border-radius:14px;padding:28px 20px;text-align:center;cursor:pointer;transition:all .2s;position:relative;background:var(--s1)}
 .doc-zone:hover,.doc-zone.drag{border-color:var(--p);background:rgba(108,99,255,.05)}
 .doc-zone.has-file{border-style:solid;border-color:var(--gr);background:rgba(0,200,150,.04)}
-.doc-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.doc-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;z-index:2}
+.doc-zone > *:not(input){pointer-events:none}
 .doc-zone-ico{font-size:26px;margin-bottom:8px}
 .doc-zone-lbl{font-size:13px;font-weight:600;color:var(--t0);margin-bottom:4px}
 .doc-zone-sub{font-size:11.5px;color:var(--t2)}
