@@ -333,8 +333,7 @@ footer{border-top:1px solid var(--b0);padding:20px 28px;display:flex;align-items
 .doc-zone{border:1.5px dashed var(--b1);border-radius:14px;padding:28px 20px;text-align:center;cursor:pointer;transition:all .2s;position:relative;background:var(--s1)}
 .doc-zone:hover,.doc-zone.drag{border-color:var(--p);background:rgba(108,99,255,.05)}
 .doc-zone.has-file{border-style:solid;border-color:var(--gr);background:rgba(0,200,150,.04)}
-.doc-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;z-index:2}
-.doc-zone > *:not(input){pointer-events:none}
+.doc-zone-input{display:none}
 .doc-zone-ico{font-size:26px;margin-bottom:8px}
 .doc-zone-lbl{font-size:13px;font-weight:600;color:var(--t0);margin-bottom:4px}
 .doc-zone-sub{font-size:11.5px;color:var(--t2)}
@@ -612,21 +611,21 @@ footer{border-top:1px solid var(--b0);padding:20px 28px;display:flex;align-items
       </div>
 
       <!-- Upload zones -->
+      <input type="file" id="file-deck" class="doc-zone-input" accept=".pdf,.pptx,.ppt" onchange="onFile(event,'deck')"/>
+      <input type="file" id="file-model" class="doc-zone-input" accept=".xlsx,.xls,.csv" onchange="onFile(event,'model')"/>
       <div class="doc-zones">
-        <div class="doc-zone" id="zone-deck" ondragover="onDrag(event,'deck')" ondragleave="offDrag('deck')" ondrop="onDrop(event,'deck')">
-          <input type="file" id="file-deck" accept=".pdf,.pptx,.ppt" onchange="onFile(event,'deck')"/>
+        <label class="doc-zone" id="zone-deck" for="file-deck" ondragover="onDrag(event,'deck')" ondragleave="offDrag('deck')" ondrop="onDrop(event,'deck')">
           <div class="doc-zone-ico">📊</div>
           <div class="doc-zone-lbl">Company Deck</div>
           <div class="doc-zone-sub">PDF or PPTX · optional but recommended</div>
           <div class="doc-zone-file" id="deck-name" style="display:none"></div>
-        </div>
-        <div class="doc-zone" id="zone-model" ondragover="onDrag(event,'model')" ondragleave="offDrag('model')" ondrop="onDrop(event,'model')">
-          <input type="file" id="file-model" accept=".xlsx,.xls,.csv" onchange="onFile(event,'model')"/>
+        </label>
+        <label class="doc-zone" id="zone-model" for="file-model" ondragover="onDrag(event,'model')" ondragleave="offDrag('model')" ondrop="onDrop(event,'model')">
           <div class="doc-zone-ico">📈</div>
           <div class="doc-zone-lbl">Financial Model</div>
           <div class="doc-zone-sub">Excel or CSV · optional</div>
           <div class="doc-zone-file" id="model-name" style="display:none"></div>
-        </div>
+        </label>
       </div>
 
       <div class="score-go-wrap">
