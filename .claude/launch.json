@@ -1,0 +1,29 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "clarix",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-l", "4321", "."],
+      "port": 4321
+    },
+    {
+      "name": "coding-agent",
+      "runtimeExecutable": "C:\\Program Files\\nodejs\\node.exe",
+      "runtimeArgs": ["coding-agent/dist/index.js", "--web", "--port", "4390", "--cwd", "coding-agent"],
+      "port": 4390
+    },
+    {
+      "name": "coding-agent-devtest",
+      "runtimeExecutable": "C:\\Program Files\\nodejs\\node.exe",
+      "runtimeArgs": ["coding-agent/dist/index.js", "--web", "--port", "4391", "--cwd", "coding-agent"],
+      "port": 4391
+    },
+    {
+      "name": "two-wheeler-router",
+      "runtimeExecutable": "C:\\Program Files\\nodejs\\node.exe",
+      "runtimeArgs": ["two-wheeler-router/server.js"],
+      "port": 8080
+    }
+  ]
+}

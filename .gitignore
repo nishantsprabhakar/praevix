@@ -1,0 +1,11 @@
+# coding-agent is its own git repository with its own remote
+# (github.com/nishantsprabhakar/codingagent) — never embed it here.
+/coding-agent/
+
+# OS/editor junk
+.DS_Store
+Thumbs.db
+node_modules/
+
+# personal, machine-local Claude Code settings — not meant to be shared
+.claude/settings.local.json

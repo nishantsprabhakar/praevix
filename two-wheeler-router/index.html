@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Fastest 2-Wheeler Route (India)</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div id="key-gate" class="key-gate">
+  <div class="key-card">
+    <h1>🏍️ Fastest 2-Wheeler Route</h1>
+    <p>This app uses the Google Maps <strong>TWO_WHEELER</strong> travel mode, which is only available for routes within India. It accounts for lanes/shortcuts two-wheelers can use and roads they're restricted from.</p>
+    <p>Paste a Google Maps API key with <strong>Maps JavaScript API</strong>, <strong>Places API</strong>, and <strong>Directions API</strong> enabled (billing must be active on the project):</p>
+    <input id="api-key-input" type="text" placeholder="AIza..." autocomplete="off" spellcheck="false" />
+    <button id="api-key-submit">Load Map</button>
+    <p class="key-hint">Your key is stored only in this browser's local storage, never sent anywhere except Google.</p>
+  </div>
+</div>
+
+<div id="app" class="app hidden">
+  <aside class="panel">
+    <h1>🏍️ Fastest Route</h1>
+
+    <label for="origin-input">From</label>
+    <div class="input-row">
+      <input id="origin-input" type="text" placeholder="Origin (e.g. Koramangala, Bengaluru)" />
+      <button id="locate-btn" title="Use my current location">📍</button>
+    </div>
+
+    <button id="swap-btn" title="Swap origin and destination">⇅ Swap</button>
+
+    <label for="destination-input">To</label>
+    <input id="destination-input" type="text" placeholder="Destination (e.g. Whitefield, Bengaluru)" />
+
+    <div class="options-row">
+      <label><input type="checkbox" id="avoid-highways" /> Avoid highways</label>
+      <label><input type="checkbox" id="avoid-tolls" /> Avoid tolls</label>
+    </div>
+
+    <button id="route-btn" class="primary">Find Fastest Route</button>
+    <div id="status" class="status"></div>
+
+    <div id="result" class="result hidden">
+      <div class="result-summary">
+        <div class="result-stat">
+          <span class="result-value" id="result-duration">--</span>
+          <span class="result-label">ETA (live traffic)</span>
+        </div>
+        <div class="result-stat">
+          <span class="result-value" id="result-distance">--</span>
+          <span class="result-label">Distance</span>
+        </div>
+      </div>
+
+      <div id="alt-routes" class="alt-routes"></div>
+
+      <h2>Turn-by-turn</h2>
+      <ol id="steps-list" class="steps-list"></ol>
+    </div>
+
+    <p class="reset-link"><a id="reset-key" href="#">Change API key</a></p>
+  </aside>
+
+  <div id="map" class="map"></div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,188 @@
+{
+  "version": 1,
+  "projectName": "2026 Income Tax Filing",
+  "goals": "I want to complete my income tax filing by next week",
+  "createdAt": "2026-07-08T07:39:51.625Z",
+  "updatedAt": "2026-07-08T07:39:51.632Z",
+  "phases": [
+    {
+      "id": "phase_mrbrpb62_8",
+      "title": "Preparation & Document Collection",
+      "description": "Collect all necessary tax documents and verify personal information before entering data into tax software.",
+      "tasks": [
+        {
+          "id": "task_mrbrpb61_1",
+          "title": "Gather all W-2 forms from employers",
+          "description": "Collect W-2s from each employer and verify accuracy of employer name, EIN, and amounts.",
+          "status": "not_started",
+          "dueDate": "2026-07-09"
+        },
+        {
+          "id": "task_mrbrpb62_2",
+          "title": "Gather 1099 forms (interest, dividends, etc.)",
+          "description": "Collect all 1099-INT, 1099-DIV, 1099-MISC, and 1099-NEC forms and verify amounts.",
+          "status": "not_started",
+          "dueDate": "2026-07-09"
+        },
+        {
+          "id": "task_mrbrpb62_3",
+          "title": "Gather receipts for deductible expenses (charity, medical, etc.)",
+          "description": "Collect receipts and statements for all deductible expenses and categorize them.",
+          "status": "not_started",
+          "dueDate": "2026-07-09"
+        },
+        {
+          "id": "task_mrbrpb62_4",
+          "title": "Gather records of any capital gains/losses",
+          "description": "Collect brokerage statements and transaction records for capital gains/losses.",
+          "status": "not_started",
+          "dueDate": "2026-07-09"
+        },
+        {
+          "id": "task_mrbrpb62_5",
+          "title": "Gather bank statements for interest income",
+          "description": "Collect bank statements showing interest earned for the tax year.",
+          "status": "not_started",
+          "dueDate": "2026-07-09"
+        },
+        {
+          "id": "task_mrbrpb62_6",
+          "title": "Gather records of any foreign income or assets",
+          "description": "Collect documentation of foreign income, foreign bank accounts, and foreign assets.",
+          "status": "not_started",
+          "dueDate": "2026-07-09"
+        },
+        {
+          "id": "task_mrbrpb62_7",
+          "title": "Verify personal information (SSN, address)",
+          "description": "Confirm SSN, filing status, and address are correct on all documents.",
+          "status": "not_started",
+          "dueDate": "2026-07-09"
+        }
+      ]
+    },
+    {
+      "id": "phase_mrbrpb62_15",
+      "title": "Data Entry & Calculation",
+      "description": "Enter all collected data into tax software and perform preliminary calculations.",
+      "tasks": [
+        {
+          "id": "task_mrbrpb62_9",
+          "title": "Input W-2 data into tax software",
+          "description": "Enter employer information and wages from each W-2 into the software.",
+          "status": "not_started",
+          "dueDate": "2026-07-11"
+        },
+        {
+          "id": "task_mrbrpb62_10",
+          "title": "Input 1099 data into tax software",
+          "description": "Enter interest, dividend, and other 1099 information into the software.",
+          "status": "not_started",
+          "dueDate": "2026-07-11"
+        },
+        {
+          "id": "task_mrbrpb62_11",
+          "title": "Enter deductible expenses into tax software",
+          "description": "Input all deductible expenses, ensuring correct categories and amounts.",
+          "status": "not_started",
+          "dueDate": "2026-07-11"
+        },
+        {
+          "id": "task_mrbrpb62_12",
+          "title": "Enter capital gains/losses into tax software",
+          "description": "Input sale details, cost basis, and proceeds for capital assets.",
+          "status": "not_started",
+          "dueDate": "2026-07-11"
+        },
+        {
+          "id": "task_mrbrpb62_13",
+          "title": "Verify tax credits (e.g., education, child tax credit)",
+          "description": "Check eligibility and input applicable tax credits into the software.",
+          "status": "not_started",
+          "dueDate": "2026-07-12"
+        },
+        {
+          "id": "task_mrbrpb62_14",
+          "title": "Review preliminary tax liability calculation",
+          "description": "Examine the software’s preliminary calculation for accuracy and completeness.",
+          "status": "not_started",
+          "dueDate": "2026-07-12"
+        }
+      ]
+    },
+    {
+      "id": "phase_mrbrpb62_19",
+      "title": "Review & Submission",
+      "description": "Perform a final audit of the return, resolve discrepancies, and file electronically.",
+      "tasks": [
+        {
+          "id": "task_mrbrpb62_16",
+          "title": "Cross-check all entries against source documents",
+          "description": "Verify each line item in the software matches the original documents.",
+          "status": "not_started",
+          "dueDate": "2026-07-13"
+        },
+        {
+          "id": "task_mrbrpb62_17",
+          "title": "Resolve any discrepancies or missing information",
+          "description": "Correct errors and gather any missing documents before finalizing.",
+          "status": "not_started",
+          "dueDate": "2026-07-13"
+        },
+        {
+          "id": "task_mrbrpb62_18",
+          "title": "File tax return electronically",
+          "description": "Submit the completed tax return via the IRS e-file system and confirm receipt.",
+          "status": "not_started",
+          "dueDate": "2026-07-14"
+        }
+      ]
+    }
+  ],
+  "milestones": [
+    {
+      "id": "milestone_mrbrpb62_20",
+      "title": "Document Collection Complete",
+      "targetDate": "2026-07-09",
+      "taskIds": [
+        "task_mrbrpb61_1",
+        "task_mrbrpb62_2",
+        "task_mrbrpb62_3",
+        "task_mrbrpb62_4",
+        "task_mrbrpb62_5",
+        "task_mrbrpb62_6",
+        "task_mrbrpb62_7"
+      ]
+    },
+    {
+      "id": "milestone_mrbrpb62_21",
+      "title": "Data Entry Complete",
+      "targetDate": "2026-07-12",
+      "taskIds": [
+        "task_mrbrpb62_9",
+        "task_mrbrpb62_10",
+        "task_mrbrpb62_11",
+        "task_mrbrpb62_12",
+        "task_mrbrpb62_13",
+        "task_mrbrpb62_14"
+      ]
+    },
+    {
+      "id": "milestone_mrbrpb62_22",
+      "title": "Tax Return Filed",
+      "targetDate": "2026-07-14",
+      "taskIds": [
+        "task_mrbrpb62_16",
+        "task_mrbrpb62_17",
+        "task_mrbrpb62_18"
+      ]
+    }
+  ],
+  "changeLog": [
+    {
+      "timestamp": "2026-07-08T07:39:51.632Z",
+      "summary": "Initial plan generated from goals",
+      "source": "system"
+    }
+  ]
+}
