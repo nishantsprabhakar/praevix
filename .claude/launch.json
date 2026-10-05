@@ -24,6 +24,31 @@
       "runtimeExecutable": "C:\\Program Files\\nodejs\\node.exe",
       "runtimeArgs": ["two-wheeler-router/server.js"],
       "port": 8080
+    },
+    {
+      "name": "docs-static",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["--yes", "serve", "coding-agent/docs", "-l", "4392"],
+      "port": 4392
+    },
+    {
+      "name": "wrexlyn-investments",
+      "runtimeExecutable": "C:\\Program Files\\nodejs\\node.exe",
+      "runtimeArgs": ["wrexlyn-investments/dist/server/index.js"],
+      "port": 4500
+    },
+    {
+      "name": "wrexlyn-workspace",
+      "runtimeExecutable": "C:\\Program Files\\nodejs\\node.exe",
+      "runtimeArgs": ["wrexlyn-workspace/bridge.js", "--port", "4395"],
+      "port": 4395,
+      "url": "http://localhost:4395"
+    },
+    {
+      "name": "wrexlynwebsite-static",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["--yes", "serve", "wrexlynwebsite", "-l", "4393"],
+      "port": 4393
     }
   ]
 }

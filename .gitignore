@@ -2,6 +2,14 @@
 # (github.com/nishantsprabhakar/codingagent) — never embed it here.
 /coding-agent/
 
+# wrexlyn-investments is its own git repository with its own remote
+# (github.com/nishantsprabhakar/WrexlynInvestments) — never embed it here.
+/wrexlyn-investments/
+
+# wrexlyn-workspace is its own git repository with its own remote
+# (github.com/nishantsprabhakar/wrexlyn-workspace) — never embed it here.
+/wrexlyn-workspace/
+
 # OS/editor junk
 .DS_Store
 Thumbs.db
