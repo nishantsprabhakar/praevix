@@ -17,3 +17,10 @@ node_modules/
 
 # personal, machine-local Claude Code settings — not meant to be shared
 .claude/settings.local.json
+
+# wrexlynwebsite is its own git repository with its own remote
+# (github.com/nishantsprabhakar/wrexlynwebsite) — never embed it here.
+/wrexlynwebsite/
+
+# Local Cloudflare dev cache
+.wrangler/
