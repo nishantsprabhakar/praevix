@@ -117,6 +117,22 @@
       "port": 8788
     },
     {
+      "name": "holodeck",
+      "runtimeExecutable": "holodeck\\.venv\\Scripts\\python.exe",
+      "runtimeArgs": [
+        "-m",
+        "uvicorn",
+        "--app-dir",
+        "holodeck",
+        "server:app",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "8600"
+      ],
+      "port": 8600
+    },
+    {
       "name": "ipopulse",
       "runtimeExecutable": "npx",
       "runtimeArgs": [

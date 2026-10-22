@@ -24,3 +24,7 @@ node_modules/
 
 # Local Cloudflare dev cache
 .wrangler/
+
+# holodeck is its own git repository with its own remote
+# (github.com/nishantsprabhakar/holodeck) — never embed it here.
+/holodeck/
