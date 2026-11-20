@@ -143,6 +143,18 @@
         "4398"
       ],
       "port": 4398
+    },
+    {
+      "name": "wrexlyn-experience",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "--yes",
+        "serve",
+        "wrexlyn-workspace/docs/experience",
+        "-l",
+        "4399"
+      ],
+      "port": 4399
     }
   ]
 }
